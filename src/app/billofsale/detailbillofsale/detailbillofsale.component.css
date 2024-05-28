@@ -1,0 +1,207 @@
+.title{
+    display:flex;
+    align-items: center;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.title > .logo_img{
+    margin-right: 10px;
+    width: 150px;
+}
+
+.title > h4{
+    padding-left: 10px;
+    font-size: large;
+    color: rgb(24, 128, 128);
+    border-left: 1px solid;
+}
+
+.gradient-line {
+    margin: 0;
+    display: flex;
+    align-items: center;
+    border: none;
+    justify-content: center;
+    height: 3px;
+    background: repeating-linear-gradient(to right, rgb(228, 39, 196), rgb(228, 39, 196) 30px, rgb(33, 226, 210) 30px,rgb(33, 226, 210) 60px);
+}
+
+.address_header{
+    
+    margin-bottom: 20px;
+    background-color: aliceblue;
+    padding: 15px;
+}
+
+.location_receiving{
+    color: rgb(24, 128, 128);
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.location_receiving  > a > i{
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.location_receiving > a{
+    text-decoration: none;
+    color: rgb(24, 128, 128);
+}
+
+.index_receiving{
+    display: flex;
+    justify-content: space-between;
+    font-size: 15px;
+    font-family: Georgia, 'Times New Roman', Times, serif;
+}
+
+.index_receiving > p:first-child{
+    font-weight: bold;
+}
+
+.chechout_table{
+    width: 90%;
+    margin: auto;
+}
+
+.chechout_table, th, tr, td{
+    border: none;
+}
+
+.box-table{
+    background-color: #fff;
+    box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.1);
+}
+
+.chechout_table > thead{
+    border-top: none;
+    border-left: none;
+    border-right: none;
+}
+
+.chechout_table tbody > tr{
+    border-bottom: 1px solid #9999;
+}
+
+.transport_box{
+    width: 90%;
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    padding: 15px;
+    border-bottom: 1px solid #9999;
+    font-family: Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+
+.transport_box > span:nth-child(2){
+    color: rgb(24, 128, 128);
+}
+
+.voucher_box{
+    padding: 15px 10px;
+    display: flex;
+    width: 90%;
+    margin: auto;
+}
+
+.voucher_box > .title_voucher{
+    font-weight: bold;
+}
+
+.voucher_box .title_voucher > i{
+    color: rgb(158, 19, 19);
+}
+
+.voucher_box > .content_voucher{
+    color: rgb(24, 128, 128);
+    font-weight: 300;
+    margin-left: 30px;
+}
+
+.box_end_table_checkout{
+    width: 90%;
+    margin: auto;
+}
+
+.box_note_customer{
+    padding: 15px;
+}
+
+.box_note_customer input{
+    outline: none;
+    padding: 5px;
+    width: 100%;
+}
+
+.box_end_table_checkout {
+    display: flex;
+    justify-content: space-between;
+
+}
+.box_total_money span{
+    color: rgb(25, 161, 161);
+}
+
+.box_foote_checkout{
+    background-color: #fff;
+    box-shadow: 2px 3px 5px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    padding: 15px;
+}
+
+.box_status > div{
+    width: 50%;
+    margin-bottom: 15px;
+}
+
+.box_status > div > span{
+    color: green;
+    padding: 2px 3px;
+    margin-left: 1.2rem;
+    border: 1px solid green;
+}
+
+.box_info_summary{
+    margin-top: 50px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.box_info_customer > p{
+    margin: 10px 0;
+}   
+
+.box_info_totalmoney > p:nth-child(n+1){
+    padding: 5px 0;
+}
+
+.box_info_totalmoney > p > .box_info_totalmoney_content{
+    color: green;
+    font-size: 18px;
+    font-weight: 500;
+    font-style: italic;
+    width: 50%;
+}
+
+.box_info_totalmoney > .box_info_btn{
+    text-align: center;
+}
+
+.box_info_totalmoney > .box_info_btn > button{
+    margin-top: 10px;
+    padding: 10px 15px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    background-color: green;
+}
+
+.box_info_totalmoney > .box_info_btn > button:hover{
+    cursor: pointer;
+    opacity: 0.8;
+}

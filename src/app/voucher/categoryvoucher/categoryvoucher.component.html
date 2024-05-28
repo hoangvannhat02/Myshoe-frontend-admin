@@ -1,0 +1,332 @@
+<aside>
+    <div class="grid container">
+        <div class="row">
+            <div class="col c-12 m-3 l-3 nav-menu">
+                <div class="logo">
+                    <a href="index.html" class="link-logo">
+                        <img src="assets/set/img/logo.png" alt="">
+                    </a>
+                </div>
+
+                <div class="box-menu">
+                    <div class="menu-item">
+                        <i class="fa-solid fa-gauge-high"></i><a routerLink="/">Dashbroad</a>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="box-manage-menu">
+                            <i class="fa-solid fa-bars-progress"></i><a href="#">Quản lý sản phẩm</a>
+                            <i id="icon-angle-right" style="margin-left: 20px;font-size: 12px;"
+                                class="fa-solid fa-angle-right"></i>
+                        </div>
+                        <ul class="menu-item__list">
+                            <li>
+                                <a routerLink="/category">Loại sản phẩm</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/products">Sản phẩm</a>
+                            </li>
+                            <li>
+                                <a routerLink="/color">Màu sắc</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/size">Kích thước</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/brand">Hãng</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="menu-item">
+                        <i class="fa-solid fa-file-import"></i><a routerLink="/importinvoice">Hóa đơn nhập</a>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="box-manage-menu">
+                            <i class="fa-solid fa-ticket"></i><a
+                             href="#">Quản lý phiếu giảm giá</a>
+                            <i id="icon-angle-right" style="margin-left: 20px;font-size: 12px;" class="fa-solid fa-angle-right"></i>                                  
+                        </div>
+                        <ul class="menu-item__list show">
+                            <li>
+                                <a style="color: rgb(66, 114, 215);" routerLink="/categoryvoucher">Loại phiếu giảm giá</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/voucher">Phiếu giảm giá</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="box-manage-menu">
+                            <i class="fa-solid fa-newspaper"></i><a
+                             href="#">Quản lý tin tức</a>
+                            <i id="icon-angle-right" style="margin-left: 20px;font-size: 12px;" class="fa-solid fa-angle-right"></i>                                  
+                        </div>
+                        <ul class="menu-item__list">
+                            <li>
+                                <a routerLink="/categorynews">Chủ đề tin tức</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/news">Tin tức</a>
+                            </li>
+                        </ul>
+                    </div>
+                      
+                    <div class="menu-item">
+                        <i class="fa-solid fa-truck-arrow-right"></i><a routerLink="/transport">Quản lý vận chuyển</a>
+                    </div>
+                    
+                    <div class="menu-item"><i class="fa-solid fa-users"></i><a routerLink="/user">Người dùng</a>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fa-solid fa-user"></i><a routerLink="/supplier">Nhà cung cấp</a>
+                    </div>
+
+                    <div class="menu-item">
+                        <i class="fa-regular fa-credit-card"></i><a routerLink="/billofsale">Hóa đơn bán</a>
+                    </div>
+                    <div class="menu-item" >
+                        <i class="fa-solid fa-message"></i><a
+                            routerLink="/message">Tin nhắn</a>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fa-solid fa-list-check"></i><a
+                            routerLink="/orther">Thông tin khác</a>
+                    </div>
+                   
+                </div>
+            </div>
+
+            <div class="col c-12 m-9 l-9">
+               <app-header (navbarClicked)="handleNavbarClick()"></app-header>
+                <div class="main-content">
+                    <div class="title">
+                        <h3>Quản lý loại phiếu giảm giá</h3>
+                    </div>
+
+                    <div class="gird box-manage">
+                        <form class="row" [formGroup]="formVoucher" (ngSubmit)="add()" action="" method="post">
+                            
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <label for="loaiphieu">Loại phiếu* (Phần trăm, VND)</label>
+                                <input [(ngModel)]="categoryvoucherobj.LoaiPhieu" type="text" formControlName="LoaiPhieu" name="loaiphieu" id="loaiphieu"
+                                    placeholder="Nhập loại phiếu" class="form-control">
+                                    <div class="message-error" *ngIf="formVoucher.get('LoaiPhieu')?.touched || submitted">
+                                        <ng-container *ngIf="formVoucher.get('LoaiPhieu')?.hasError('required')">
+                                            {{ 'Không được để trống' }}
+                                        </ng-container>
+    
+                                    </div>
+                            </div>
+
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <label for="gia">Giá trị</label>
+                                <input [(ngModel)]="categoryvoucherobj.GiaTri" formControlName="GiaTri" type="number" name="gia" id="gia"
+                                    placeholder="Nhập giá" class="form-control">
+                                    <div class="message-error" *ngIf="formVoucher.get('GiaTri')?.touched || submitted">
+                                        <ng-container *ngIf="formVoucher.get('GiaTri')?.hasError('required')">
+                                            {{ 'Không được để trống' }}
+                                        </ng-container>
+    
+                                    </div>
+                            </div>
+
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <label for="giatoithieu">Giá trị tối thiểu</label>
+                                <input [(ngModel)]="categoryvoucherobj.GiaTriNhoNhat" formControlName="GiaTriNhoNhat" type="number" name="giatoithieu" id="giatoithieu"
+                                    placeholder="Nhập giá" class="form-control">
+                                    <div class="message-error" *ngIf="formVoucher.get('GiaTriNhoNhat')?.touched || submitted">
+                                        <ng-container *ngIf="formVoucher.get('GiaTriNhoNhat')?.hasError('required')">
+                                            {{ 'Không được để trống' }}
+                                        </ng-container>
+                                        <ng-container *ngIf="formVoucher.get('GiaTriNhoNhat')?.hasError('min')">
+                                            {{ 'Nhập giá trị khác 0' }}
+                                        </ng-container>
+                        
+                                    </div>
+                            </div>
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <label for="giatoida">Giá trị tối đa</label>
+                                <input [(ngModel)]="categoryvoucherobj.GiaTriLonNhat" formControlName="GiaTriLonNhat" type="number" name="giatoida" id="giatoida"
+                                    placeholder="Nhập giá" class="form-control">
+                                    <div class="message-error" *ngIf="formVoucher.get('GiaTriLonNhat')?.touched || submitted">
+                                        <ng-container *ngIf="formVoucher.get('GiaTriLonNhat')?.hasError('required')">
+                                            {{ 'Không được để trống' }}
+                                        </ng-container>
+                                        <ng-container *ngIf="formVoucher.get('GiaTriLonNhat')?.hasError('min')">
+                                            {{ 'Nhập giá trị khác 0' }}
+                                        </ng-container>
+                                        <div *ngIf="formVoucher.get('GiaTriLonNhat')?.hasError('notGreaterThan')" >
+                                            Giá trị lớn nhất phải lớn hơn giá trị nhỏ nhất
+                                          </div>
+                                    </div>
+                            </div>
+
+                            <div class="col c-12 m-12 l-12 form-button">
+                                <button type="submit" class="btn-edit">{{ btn }}</button>
+                                <button type="button" (click)="loadnew()" class="btn-refresh">Làm mới</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <hr style="color: rgba(0,0,0,0.01);margin: 10px 0;">
+                    <div class="box-search">
+                        <div class="datatable_length">
+                            <label for="">Show
+                                <select [(ngModel)]="filterobj.itemsperpage" (change)="search()">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                    <option value="30">30</option>
+                                </select>
+                                Entries
+                            </label>
+                        </div>
+                        <form action="">
+                            <span>Search: </span><input type="text" [(ngModel)]="filterobj.searchkeyword"
+                                (input)="search()" placeholder="Nhập thông tin tìm kiếm"
+                                [ngModelOptions]="{standalone: true}">
+                        </form>
+                    </div>
+
+                    <div class="box-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" [(ngModel)]="checkedAll" (change)="selectedAll($event)"> All
+                                    </th>
+                                    <th>
+                                        Mã loại giảm giá
+                                    </th>
+                                    <th>
+                                        Loại giảm giá
+                                    </th>
+                                    <th>
+                                        Giá trị
+                                    </th>
+                                    <th>
+                                        Giá trị tối thiểu
+                                    </th>
+                                    <th>
+                                        Giá trị tối đa
+                                    </th>
+
+                                    <th>
+                                        <ng-container *ngIf="selectedItems.length>0">
+                                            <button (click)="deleteChecked()">Xóa all</button>
+                                        </ng-container>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of categoryvouchers">
+                                    <td>
+                                        <input type="checkbox" [checked]="isChecked(item)"
+                                            (change)="checkedItem($event,item)">
+                                    </td>
+                                    <td>
+                                        {{ item.MaLoaiPhieu }}
+                                    </td>
+                                    <td>
+                                        {{ item.LoaiPhieu }}
+                                    </td>
+
+                                    <td>
+                                        {{ item.GiaTri }}
+                                    </td>
+                                    <td>
+                                        {{ item.GiaTriNhoNhat}}
+                                    </td>
+                                    <td>
+                                        {{ item.GiaTriLonNhat }}
+                                    </td>
+
+                                    <td>
+                                        <i id="modal" (click)="getdatabyid(item.MaLoaiPhieu)" class="fa-solid fa-pencil"></i>
+                                        <i (click)="delete(item.MaLoaiPhieu)" class="fa-solid fa-trash"></i>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                        <div class="pagination">
+                            <ul>
+                                <li>
+                                    <a href="#" (click)="onPrevious($event)" [hidden]="filterobj.pagenumber === 1"><i
+                                            class="fa-solid fa-angle-left"></i></a>
+                                </li>
+                                <li>
+                                    <a href="#">{{ filterobj.pagenumber }}</a>
+                                </li>
+                                <li>
+                                    <a href="#" (click)="onNext($event)"
+                                        [hidden]="filterobj.pagenumber === totalPages || totalPages === 0"><i
+                                            class="fa-solid fa-angle-right"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="showmodel" data-target="#modal">
+                        <div class="showmodel__content">
+                            <i class="fa-solid fa-x iconclose" (click)="closeModel()"></i>
+                            <div class="gird box-manage">
+                                <form class="row" action="" method="post">
+                                    <!-- <input type="number" name="mavanchuyen" id="mavanchuyen" [ngModel]="transport.MaVanChuyen" style="display: none;"> -->
+                                    <div class="col c-12 m-12 l-12 form-input">
+                                        <h1 style="margin-bottom: 10px;">Mã loại phiểu giảm giá: {{ categoryvoucher.MaLoaiPhieu }}</h1>
+                                    </div>
+                                    <div class="col c-12 m-12 l-12 form-input">
+                                        <label for="loaiphieu">Loại phiếu</label>
+                                        <input [(ngModel)]="categoryvoucher.LoaiPhieu" type="text" name="loaiphieu" id="loaiphieu"
+                                            class="form-control">
+                                    </div>
+                                    <div class="col c-12 m-12 l-12 form-input">
+                                        <label for="gia">Giá trị</label>
+                                        <input [(ngModel)]="categoryvoucher.GiaTri" type="text" name="gia" id="gia"
+                                            class="form-control">
+                                    </div>
+                                    <div class="col c-12 m-12 l-12 form-input">
+                                        <label for="giatrinhonhat">Giá trị tối thiểu</label>
+                                        <input [(ngModel)]="categoryvoucher.GiaTriNhoNhat" type="text" name="giatrinhonhat" id="giatrinhonhat"
+                                            class="form-control">
+                                    </div>
+                                    <div class="col c-12 m-12 l-12 form-input">
+                                        <label for="giatrilonnhat">Giá trị tối đa</label>
+                                        <input [(ngModel)]="categoryvoucher.GiaTriLonNhat" type="text" name="giatrilonnhat" id="giatrilonnhat"
+                                            class="form-control">
+                                    </div>
+
+                                    <div class="col c-12 m-12 l-12 form-button" style="margin-bottom: 20px;">
+                                        <button (click)="edit()" type="button" class="btn-edit">Sửa</button>
+                                    </div>  
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</aside>
+<script>
+    $(document).ready(function () {
+
+        $("#iconclose").click(function () {
+            $('.showmodel').hide();
+        })
+    })
+</script>

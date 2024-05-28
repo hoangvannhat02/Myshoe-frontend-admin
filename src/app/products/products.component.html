@@ -1,0 +1,455 @@
+<aside>
+    <div class="grid container">
+        <div class="row">
+            <div class="col c-12 m-3 l-3 nav-menu">
+                <div class="logo">
+                    <a href="index.html" class="link-logo">
+                        <img src="assets/set/img/logo.png" alt="">
+                    </a>
+                </div>
+
+                <div class="box-menu">
+                    <div class="menu-item">
+                        <i class="fa-solid fa-gauge-high"></i><a routerLink="/">Dashbroad</a>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="box-manage-menu">
+                            <i class="fa-solid fa-bars-progress"></i><a href="#">Quản lý sản phẩm</a>
+                            <i id="icon-angle-right" style="margin-left: 20px;font-size: 12px;"
+                                class="fa-solid fa-angle-right"></i>
+                        </div>
+                        <ul class="menu-item__list show">
+                            <li>
+                                <a routerLink="/category">Loại sản phẩm</a>
+                            </li>
+
+                            <li>
+                                <a style="color: rgb(66, 114, 215);"  routerLink="/products">Sản phẩm</a>
+                            </li>
+                            <li>
+                                <a routerLink="/color">Màu sắc</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/size">Kích thước</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/brand">Hãng</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="menu-item">
+                        <i class="fa-solid fa-file-import"></i><a routerLink="/importinvoice">Hóa đơn nhập</a>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="box-manage-menu">
+                            <i class="fa-solid fa-ticket"></i><a
+                             href="#">Quản lý phiếu giảm giá</a>
+                            <i id="icon-angle-right" style="margin-left: 20px;font-size: 12px;" class="fa-solid fa-angle-right"></i>                                  
+                        </div>
+                        <ul class="menu-item__list">
+                            <li>
+                                <a routerLink="/categoryvoucher">Loại phiếu giảm giá</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/voucher">Phiếu giảm giá</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="box-manage-menu">
+                            <i class="fa-solid fa-newspaper"></i><a
+                             href="#">Quản lý tin tức</a>
+                            <i id="icon-angle-right" style="margin-left: 20px;font-size: 12px;" class="fa-solid fa-angle-right"></i>                                  
+                        </div>
+                        <ul class="menu-item__list">
+                            <li>
+                                <a routerLink="/categorynews">Chủ đề tin tức</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/news">Tin tức</a>
+                            </li>
+                        </ul>
+                    </div>
+                      
+                    <div class="menu-item">
+                        <i class="fa-solid fa-truck-arrow-right"></i><a routerLink="/transport">Quản lý vận chuyển</a>
+                    </div>
+                    
+                    <div class="menu-item"><i class="fa-solid fa-users"></i><a routerLink="/user">Người dùng</a>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fa-solid fa-user"></i><a routerLink="/supplier">Nhà cung cấp</a>
+                    </div>
+
+                    <div class="menu-item">
+                        <i class="fa-regular fa-credit-card"></i><a routerLink="/billofsale">Hóa đơn bán</a>
+                    </div>
+                    <div class="menu-item" >
+                        <i class="fa-solid fa-message"></i><a
+                            routerLink="/message">Tin nhắn</a>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fa-solid fa-list-check"></i><a
+                            routerLink="/orther">Thông tin khác</a>
+                    </div>
+                 
+                </div>
+            </div>
+
+            <div class="col c-12 m-9 l-9 ">
+                <app-header (navbarClicked)="handleNavbarClick()"></app-header>
+                <div class="main-content">
+                    <div class="title">
+                        <h3>Quản lý sản phẩm</h3>
+                    </div>
+
+                    <div class="gird box-manage">
+                        <form class="row" [formGroup]="formProduct" (ngSubmit)="create()" action="" method="post">
+                            <input type="number" name="productid" id="productid" style="display: none;">
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <label for="tensanpham">Tên sản phẩm</label>
+                                <input type="text" name="tensanpham" [(ngModel)]="productobj.TenSanPham" formControlName="TenSanPham" id="tensanpham"
+                                    placeholder="Nhập thông tin sản phẩm" class="form-control">
+                                    <div class="message-error" *ngIf="formProduct.get('TenSanPham')?.touched || submitted">
+                                        <ng-container *ngIf="formProduct.get('TenSanPham')?.hasError('required')">
+                                            {{ 'Không được để trống' }}
+                                        </ng-container>
+                                    </div>
+                            </div>
+
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <label for="loaisanpham">Loại sản phẩm</label>
+                                <select name="loaisanpham" [(ngModel)]="productobj.MaLoai" id="loaisanpham" formControlName="MaLoai"
+                                    class="form-control">
+                                    <option *ngFor="let item of categories" [value]="item.MaLoai">{{item.TenLoai}}
+                                    </option>
+                                </select>
+                                <div class="message-error" *ngIf="formProduct.get('MaLoai')?.touched || submitted">
+                                    <ng-container *ngIf="formProduct.get('MaLoai')?.hasError('required') || formProduct.get('MaLoai')?.hasError('min')">
+                                        {{ 'Không được để trống' }}
+                                    </ng-container>
+                                </div>
+                            </div>
+
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <label for="hang">Hãng</label>
+                                <select name="hang" [(ngModel)]="productobj.MaHang" id="hang" class="form-control" formControlName="MaHang"> 
+                                    <option *ngFor="let item of brands" [value]="item.MaHang">{{item.TenHang}}</option>
+                                </select>
+                                <div class="message-error" *ngIf="formProduct.get('MaHang')?.touched || submitted">
+                                    <ng-container *ngIf="formProduct.get('MaHang')?.hasError('required') || formProduct.get('MaHang')?.hasError('min')">
+                                        {{ 'Không được để trống' }}
+                                    </ng-container>
+                                </div>
+                            </div>
+
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <label for="trangthai">Trạng thái</label>
+                                <select [(ngModel)]="productobj.TrangThai" name="trangthai" id="trangthai"
+                                    class="form-control" [ngModelOptions]="{standalone:true}">
+                                    <option value="1">Hoạt động</option>
+                                    <option value="0">Ngưng hoạt động</option>
+                                </select>
+                            </div>
+
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <label for="motangan">Mô tả ngắn</label>
+                                <ckeditor [editor]="Editor" [(ngModel)]="productobj.MoTaNgan" formControlName="MoTaNgan"></ckeditor>
+                                <div class="message-error" *ngIf="formProduct.get('MoTaNgan')?.touched || submitted">
+                                    <ng-container *ngIf="formProduct.get('MoTaNgan')?.hasError('required')">
+                                        {{ 'Không được để trống' }}
+                                    </ng-container>
+                                </div>
+                            </div>
+
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <label for="mota">Mô tả</label>
+                                <ckeditor [editor]="Editor" [(ngModel)]="productobj.MoTa" formControlName="MoTa"></ckeditor>
+                                <div class="message-error" *ngIf="formProduct.get('MoTa')?.touched || submitted">
+                                    <ng-container *ngIf="formProduct.get('MoTa')?.hasError('required')">
+                                        {{ 'Không được để trống' }}
+                                    </ng-container>
+                                </div>
+                            </div>
+
+                            <!-- <div class="col c-12 m-6 l-6 form-input" style="margin-top: 20px;">
+                                    <input type="file" ng-change="upfile()" ng-model="selectedFile" id="file" />
+                                    <div style="margin-top: 5px;">
+                                        <img ng-src="{{imageSrc}}" style="width: 200px;" alt="">
+                                    </div>
+                                    <button type="button" ng-click="uploadFile()">Upload</button>
+
+                                </div> -->
+
+                            <div class="col c-12 m-12 l-12 form-button">
+                                <button type="button" class="btn-edit" (click)="create()">Thêm mới</button>
+                                <button type="button" class="btn-refresh">Làm mới</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <hr style="color: rgba(0,0,0,0.01);margin: 10px 0;">
+                    <div class="box-search">
+                        <div class="datatable_length">
+                            <label for="">Show
+                                <select [(ngModel)]="filterobj.itemsperpage" (change)="search()">
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="5">5</option>
+                                    <option value="10">10</option>
+                                    <option value="15">15</option>
+                                    <option value="20">20</option>
+                                    <option value="30">30</option>
+                                </select>
+                                Entries
+                            </label>
+                        </div>
+                        <form action="">
+                            <span>Search: </span><input type="text" [(ngModel)]="filterobj.searchkeyword"
+                                (input)="search()" [ngModelOptions]="{standalone: true}"
+                                placeholder="Nhập thông tin tìm kiếm">
+                        </form>
+                    </div>
+
+                    <div class="box-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" [(ngModel)]="checkedAll" (change)="selectedAll($event)"> All
+                                    </th>
+                                    <th>
+                                        Mã sản phẩm
+                                    </th>
+                                    <th>
+                                        Tên sản phẩm
+                                    </th>
+                                    <th>Loại sản phẩm</th>
+                                    <th>
+                                        Hãng
+                                    </th>
+                                    <th>
+                                        Lượt xem
+                                    </th>
+                                    <th>
+                                        Trạng thái
+                                    </th>
+                                    <th>Mô tả ngắn</th>
+                                    <th>Mô tả</th>
+                                    <th>
+                                        <ng-container *ngIf="selectedItems.length>0">
+                                            <button (click)="deleteChecked()">Xóa all</button>
+                                        </ng-container>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of products">
+                                    <td>
+                                        <input type="checkbox" [checked]="isChecked(item)"
+                                            (change)="checkedItem($event,item)">
+                                    </td>
+                                    <td>
+                                        {{ item.MaSanPham }}
+                                    </td>
+                                    <td>
+                                        {{ item.TenSanPham }}
+                                    </td>
+
+                                    <td>
+                                        {{ item.TenLoai }}
+                                    </td>
+
+                                    <td>
+                                        {{ item.TenHang }}
+                                    </td>
+                                    <td>
+                                        {{ item.LuotXem }}
+                                    </td>
+                                    <td>
+                                        {{ item.TrangThai.data[0] }}
+                                    </td>
+                                    <td [innerHTML]="item.MoTaNgan">
+                                    </td>
+                                    <td [innerHTML]="item.MoTa">
+                                        
+                                    </td>
+
+                                    <td>
+                                        <i class="fa-solid fa-eye" title="Xem thông tin chi tiết sản phẩm"
+                                            (click)="redirettodetail(item.MaSanPham)"></i> <i id="modal"
+                                            class="fa-solid fa-pencil" (click)="getdatabyid(item.MaSanPham)"></i><i
+                                            (click)="delete(item.MaSanPham)" class="fa-solid fa-trash"></i>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+
+                        <div class="pagination">
+                            <ul>
+                                <li>
+                                    <a href="#" (click)="onPrevious($event)" [hidden]="filterobj.pagenumber === 1"><i
+                                            class="fa-solid fa-angle-left"></i></a>
+                                </li>
+                                <li>
+                                    <a href="">{{ filterobj.pagenumber }}</a>
+                                </li>
+                                <li>
+                                    <a href="#" (click)="onNext($event)"
+                                        [hidden]="filterobj.pagenumber === totalPages"><i
+                                            class="fa-solid fa-angle-right"></i></a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="showmodel" data-target="#modal">
+                            <div class="showmodel__content">
+                                <i class="fa-solid fa-x iconclose" (click)="closeModel()"></i>
+                                <div class="gird box-manage">
+                                    <form class="row" action="" method="post">
+                                        <input type="number" name="masp" id="masp" [(ngModel)]="product.MaSanPham"
+                                            style="display: none;">
+                                        <div class="col c-12 m-12 l-12 form-input">
+                                            <h1 style="margin-bottom: 10px;">Mã sản phẩm: {{ product.MaSanPham }}</h1>
+                                        </div>
+                                        <div class="col c-12 m-6 l-6 form-input">
+                                            <label for="tensanpham">Tên sản phẩm</label>
+                                            <input [(ngModel)]="product.TenSanPham" type="text" name="tensanpham"
+                                                id="tensanpham" class="form-control">
+                                        </div>
+                                        <div class="col c-12 m-6 l-6 form-input">
+                                            <label for="loaisanpham">Loại sản phẩm</label>
+                                            <select name="loaisanpham" [(ngModel)]="product.MaLoai" id="loaisanpham"
+                                                class="form-control">
+                                                <option *ngFor="let item of categories" [value]="item.MaLoai">
+                                                    {{item.TenLoai}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col c-12 m-6 l-6 form-input">
+                                            <label for="hang">Hãng</label>
+                                            <select name="hang" [(ngModel)]="product.MaHang" id="hang"
+                                                class="form-control">
+                                                <option *ngFor="let item of brands" [value]="item.MaHang">
+                                                    {{item.TenHang}}</option>
+                                            </select>
+                                        </div>
+                                        <div class="col c-12 m-6 l-6 form-input">
+                                            <label for="motangan">Mô tả ngắn</label>
+                                            <input [(ngModel)]="product.MoTaNgan" type="text" name="motangan"
+                                                id="motangan" class="form-control">
+                                        </div>
+                                        <div class="col c-12 m-6 l-6 form-input">
+                                            <label for="mota">Mô tả</label>
+                                            <input [(ngModel)]="product.MoTa" type="text" name="mota" id="mota"
+                                                class="form-control">
+                                        </div>
+                                        <div class="col c-12 m-6 l-6 form-input">
+                                            <label for="trangthai">Trạng thái</label>
+                                            <select [(ngModel)]="product.TrangThai" name="trangthai" id="trangthai"
+                                                class="form-control">
+                                                <option value="1">Hoạt động</option>
+                                                <option value="0">Ngưng hoạt động</option>
+                                            </select>
+                                        </div>
+                                        <!-- <div class="col c-12 m-12 l-12 form-input">
+                                            <label for="mausac">Màu sắc</label>
+                                            <select name="mausac" id="mausac" ng-model="mausac" class="form-control"
+                                                ng-options="x.MaMau as x.TenMau for x in listcolor">
+                                            </select>
+                                        </div> -->
+
+                                        <!-- <div class="col c-12 m-6 l-6 form-input">
+                                            <label for="sanpham">Sản phẩm</label>
+                                            <select name="sanpham" id="sanpham" ng-model="sanpham" class="form-control"
+                                                ng-options="x.MaSanPham as x.TenSanPham for x in listpro">
+        
+                                            </select>
+                                        </div>   -->
+
+                                        <!-- <div class="col c-12 m-6 l-6 form-input" style="margin-top: 20px;">
+                                            <input type="file" ng-change="upfile()" ng-model="selectedFile" id="file" />
+                                            <div style="margin-top: 5px;">
+                                                <img id="show-img-file"  style="width: 50px;" alt="">
+                                            </div>
+                                            <button type="button">Upload</button>
+                                        </div> -->
+
+                                        <div class="col c-12 m-12 l-12 form-button" style="margin-bottom: 20px;">
+                                            <button (click)="edit()" type="button" class="btn-edit">Sửa</button>
+                                        </div>
+
+                                        <!-- <div class="col c-12 m-12 l-12">
+                                            <div class="box-table">
+                                                <table>
+                                                    <thead>
+                                                        <tr>
+                                                            <th>
+                                                                Màu
+                                                            </th>
+                                                            <th>
+                                                                Tên sản phẩm
+                                                            </th>
+                                                            <th>
+                                                                Hình ảnh
+                                                            </th>
+    
+    
+                                                            <th>
+                                                                Chức năng
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr >
+                                                            <td>
+                                                               
+                                                            </td>
+                                                            <td>
+                                                               
+                                                            </td>
+    
+                                                            <td>
+                                                                <img style="width: 100px;" >
+                                                            </td>
+    
+                                                            <td>
+                                                                <i class="fa-solid fa-trash"></i>
+                                                            </td>
+                                                        </tr>
+    
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div> -->
+
+
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</aside>
+<script>
+    $(document).ready(function () {
+        $('.box-user').click(function () {
+            $('.info-user').toggleClass("hidden");
+        })
+        $("#iconclose").click(function () {
+            $('.showmodel').hide();
+        })
+    })
+</script>

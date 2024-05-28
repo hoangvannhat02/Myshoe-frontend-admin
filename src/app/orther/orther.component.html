@@ -1,0 +1,356 @@
+<aside>
+    <div class="grid container">
+        <div class="row">
+            <div class="col c-12 m-3 l-3 nav-menu">
+                <div class="logo">
+                    <a routerLink="" class="link-logo">
+                        <img src="assets/set/img/logo.png" alt="">
+                    </a>
+                </div>
+
+                <div class="box-menu">
+                    <div class="menu-item">
+                        <i class="fa-solid fa-gauge-high"></i><a routerLink="/">Dashbroad</a>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="box-manage-menu">
+                            <i class="fa-solid fa-bars-progress"></i><a href="#">Quản lý sản phẩm</a>
+                            <i id="icon-angle-right" style="margin-left: 20px;font-size: 12px;"
+                                class="fa-solid fa-angle-right"></i>
+                        </div>
+                        <ul class="menu-item__list">
+                            <li>
+                                <a routerLink="/category">Loại sản phẩm</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/products">Sản phẩm</a>
+                            </li>
+                            <li>
+                                <a routerLink="/color">Màu sắc</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/size">Kích thước</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/brand">Hãng</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="menu-item">
+                        <i class="fa-solid fa-file-import"></i><a routerLink="/importinvoice">Hóa đơn nhập</a>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="box-manage-menu">
+                            <i class="fa-solid fa-ticket"></i><a href="#">Quản lý phiếu giảm giá</a>
+                            <i id="icon-angle-right" style="margin-left: 20px;font-size: 12px;"
+                                class="fa-solid fa-angle-right"></i>
+                        </div>
+                        <ul class="menu-item__list">
+                            <li>
+                                <a routerLink="/categoryvoucher">Loại phiếu giảm giá</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/voucher">Phiếu giảm giá</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="box-manage-menu">
+                            <i class="fa-solid fa-newspaper"></i><a href="#">Quản lý tin tức</a>
+                            <i id="icon-angle-right" style="margin-left: 20px;font-size: 12px;"
+                                class="fa-solid fa-angle-right"></i>
+                        </div>
+                        <ul class="menu-item__list">
+                            <li>
+                                <a routerLink="/categorynews">Chủ đề tin tức</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/news">Tin tức</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="menu-item">
+                        <i class="fa-solid fa-truck-arrow-right"></i><a routerLink="/transport">Quản lý vận chuyển</a>
+                    </div>
+
+                    <div class="menu-item"><i
+                            class="fa-solid fa-users"></i><a routerLink="/user">Người
+                            dùng</a>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fa-solid fa-user"></i><a routerLink="/supplier">Nhà cung cấp</a>
+                    </div>
+
+                    <div class="menu-item">
+                        <i class="fa-regular fa-credit-card"></i><a routerLink="/billofsale">Hóa đơn bán</a>
+                    </div>
+                    <div class="menu-item" >
+                        <i class="fa-solid fa-message"></i><a
+                            routerLink="/message">Tin nhắn</a>
+                    </div>
+
+                    <div class="menu-item" style="color: rgb(66, 114, 215);">
+                        <i class="fa-solid fa-list-check" style="color: rgb(66, 114, 215);"></i><a
+                            routerLink="/orther" style="color: rgb(66, 114, 215);">Thông tin khác</a>
+                    </div>
+                    
+                  
+                </div>
+            </div>
+            <div class="col c-12 m-9 l-9">
+                <app-header (navbarClicked)="handleNavbarClick()"></app-header>
+                <div class="main-content">
+                    <div class="title">
+                        <h3 style="font-weight: bolder;">Thông tin khác</h3>
+                    </div>
+
+                    <hr style="color: rgba(0,0,0,0.01);margin: 10px 0;">
+                    <div class="gird box-manage">
+                        <h2 class="title_banner" style="margin: 10px 0;font-size: 24px;font-weight: 500;">Logo</h2>
+                        <form class="row"  action="" method="post">
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <input #fileinput type="file" (change)="upfile($event)" style="display: none;" id="file" />
+                               
+                            </div>
+                            <div class="col c-12 m-12 l-12 form-button" *ngIf="orther.Logo === null || orther.Logo === '' || orther.Logo === undefined">
+                                <button type="submit" (click)="addNew()" class="btn-edit">Thêm ảnh mới</button>  
+                            </div>
+                        </form>
+                    </div>
+                    <div class="box-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Ảnh logo
+                                    </th>
+                                    <th>
+                                       Chức năng
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr [hidden]="orther.Logo === null || orther.Logo === ''">
+                                    <td style="width: 80%;height: 100px"><img class="img-banner" style="width: 90%;height: 100%;object-fit: cover;" [src]="'http://localhost:8000/'+orther.Logo" alt=""></td>
+                                    <td style="display: flex; justify-content: center;border: none;height: 100px;align-items: center;">
+                                        <button style="cursor: pointer;border-radius: 10px; padding: 5px 7px;margin: 0 5px;border: 1px solid rgba(0,0,0,0.01);background-color: green;color: #fff;" (click)="addNew()">Sửa</button>
+                                        <button style="cursor: pointer;border-radius: 10px;padding: 5px 7px;border: 1px solid rgba(0,0,0,0.01);background-color: rgb(219, 51, 51);color: #fff;" (click)="deletelogo(orther)">Xóa</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                   
+                    <hr style="color: rgba(0,0,0,0.01);margin: 10px 0;">
+                    <div class="gird box-manage">
+                        <h2 class="title_banner" style="margin: 10px 0;font-size: 24px;font-weight: 500;">Ảnh banner chính</h2>
+                        <form class="row"  action="" method="post">
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <input #fileinputmain type="file" (change)="upfilemain($event)" style="display: none;"  id="file" />
+                            </div>
+                            <div class="col c-12 m-12 l-12 form-button" *ngIf="orther.AnhQuangCaoPhanDau.length <= 2">
+                                <button type="submit" (click)="addNewBannerMain(-1)" class="btn-edit">Thêm ảnh mới</button>  
+                            </div>
+                        </form>
+                    </div>
+                    <div class="box-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Ảnh
+                                    </th>
+                                    <th>
+                                       Chức năng
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of orther.AnhQuangCaoPhanDau,let i = index">
+                                    <td style="width: 80%;height: 100px"><img class="img-banner" style="width: 90%;height: 100%;object-fit: cover;" [src]="'http://localhost:8000/'+item" alt=""></td>
+                                    <td style="display: flex; justify-content: center;border: none;height: 100px;align-items: center;">
+                                        <button style="cursor: pointer;border-radius: 10px; padding: 5px 7px;margin: 0 5px;border: 1px solid rgba(0,0,0,0.01);background-color: green;color: #fff;" (click)="addNewBannerMain(i)">Sửa</button>
+                                        <button style="cursor: pointer;border-radius: 10px;padding: 5px 7px;border: 1px solid rgba(0,0,0,0.01);background-color: rgb(219, 51, 51);color: #fff;" (click)="deleteBannerMain(i)">Xóa</button>
+                                    </td>
+                                </tr>
+                                
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <hr style="color: rgba(0,0,0,0.01);margin: 10px 0;">
+                    <div class="gird box-manage">
+                        <h2 class="title_banner" style="margin: 10px 0;font-size: 24px;font-weight: 500;">Ảnh banner phụ</h2>
+                        <form class="row"  action="" method="post">
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <label for="tieudegiua">Tiêu đề</label>
+                                <input type="text" [(ngModel)]="titlemid" name="tieudegiua" id="tieudegiua"
+                                    placeholder="Nhập tiêu đề" class="form-control">
+                            </div>
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <input #fileinputmid type="file" (change)="upfilemid($event)"  id="file" />
+                                <div style="margin-top: 5px;">
+                                    <img [src]="imgmid" style="width: 100px;" alt="">
+                                </div>
+                            </div>
+                            <div class="col c-12 m-12 l-12 form-button" *ngIf="orther.AnhQuangCaoPhanGiua.length <= 1">
+                                <button type="submit" (click)="addBannerMid()" class="btn-edit">{{ btnmid }}</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="box-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Tiêu đề
+                                    </th>
+                                    <th>
+                                        Ảnh
+                                    </th>
+                                    <th>
+                                       Chức năng
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of orther.AnhQuangCaoPhanGiua,let i = index">
+                                    <td>{{ item.title }}</td>
+                                    <td style="width: 60%;height: 100px"><img class="img-banner" style="width: 90%;height: 100%;object-fit: cover;" src="{{ 'http://localhost:8000/'+item.image }}" alt=""></td>
+                                    <td style="display: flex; justify-content: center;border: none;height: 100px;align-items: center;">
+                                        <button id="modal" (click)="editmidmodel(i)" style="display: inline-block;cursor: pointer;border-radius: 10px; padding: 5px 7px;margin: 0 5px;border: 1px solid rgba(0,0,0,0.01);background-color: green;color: #fff;">Sửa</button>
+                                        <button (click)="deletemid(i)" style="display: inline-block;cursor: pointer;border-radius: 10px;padding: 5px 7px;border: 1px solid rgba(0,0,0,0.01);background-color: rgb(219, 51, 51);color: #fff;">Xóa</button>
+                                    </td>
+                                </tr>
+                              
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="showmodel" data-target="#modal">
+                        <div class="showmodel__content">
+                            <i class="fa-solid fa-x iconclose" (click)="closeModel()"></i>
+                            <div class="gird box-manage">
+                                <form class="row" action="" method="post">
+          
+                                    <div class="col c-12 m-12 l-12 form-input">
+                                        <label for="tieude">Tiêu đề</label>
+                                        <input type="text" [(ngModel)]="objmid.title" name="tieude" 
+                                            id="tieude" placeholder="Nhập thông tin tiêu đề" class="form-control">
+                                    </div>
+
+                                    <div class="col c-12 m-6 l-6 form-input" style="margin-top: 20px;">
+                                        Hình ảnh
+                                        <div style="margin-top: 5px;">
+                                            <img [src]="imgmidmodel" style="width: 100px;" alt="">
+                                        </div>        
+                                        <input #fileinputmidmodel type="file" (change)="upfilemidmodel($event)" id="file" />
+                                    </div>
+                                     
+                                    
+                                    <div class="col c-12 m-12 l-12 form-button" style="margin-bottom: 20px;">
+                                        <button type="button" class="btn-edit" (click)="updatemidmodel()">Sửa</button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <hr style="color: rgba(0,0,0,0.01);margin: 10px 0;">
+                    <div class="gird box-manage">
+                        <h2 class="title_banner" style="margin: 10px 0;font-size: 24px;font-weight: 500;">Banner left</h2>
+                        <form class="row"  action="" method="post">
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <input #fileinputleft type="file" (change)="upfileleft($event)" style="display: none;" id="file" />
+                               
+                            </div>
+                            <div class="col c-12 m-12 l-12 form-button" *ngIf="orther.AnhQuangCaoBenTrai === null || orther.AnhQuangCaoBenTrai === '' || orther.AnhQuangCaoBenTrai === undefined">
+                                <button type="submit" (click)="addNewLeft()" class="btn-edit">Thêm ảnh mới</button>  
+                            </div>
+                        </form>
+                    </div>
+                    <div class="box-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        Ảnh banner trái
+                                    </th>
+                                    <th>
+                                       Chức năng
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr [hidden]="orther.AnhQuangCaoBenTrai === null || orther.AnhQuangCaoBenTrai === ''">
+                                    <td style="width: 80%;height: 100px"><img class="img-banner" style="width: 90%;height: 100%;object-fit: cover;" [src]="'http://localhost:8000/'+orther.AnhQuangCaoBenTrai" alt=""></td>
+                                    <td style="display: flex; justify-content: center;border: none;height: 100px;align-items: center;">
+                                        <button style="cursor: pointer;border-radius: 10px; padding: 5px 7px;margin: 0 5px;border: 1px solid rgba(0,0,0,0.01);background-color: green;color: #fff;" (click)="addNewLeft()">Sửa</button>
+                                        <button style="cursor: pointer;border-radius: 10px;padding: 5px 7px;border: 1px solid rgba(0,0,0,0.01);background-color: rgb(219, 51, 51);color: #fff;" (click)="deleteBannerLeft(orther)">Xóa</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                   
+                    <div class="gird box-manage">
+                        <h2 class="title_banner" style="margin: 10px 0;font-size: 24px;font-weight: 500;">Thông tin liên hệ</h2>
+                        <form class="row" (submit)="updateorther()"  action="" method="post">
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <label for="diachi">Địa chỉ</label>
+                                <input  type="text" name="diachi" [(ngModel)]="orther.DiaChiCuaHang" id="diachi"
+                                    placeholder="Nhập địa chỉ" class="form-control">
+                               
+                            </div>
+                            
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <label for="sodienthoai">Số điện thoại</label>"
+                                <input  type="text" name="sodienthoai" [(ngModel)]="orther.DienThoai" id="sodienthoai"
+                                    placeholder="Nhập số điện thoại" class="form-control">
+                            </div>
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <label for="email">Email</label>
+                                <input  type="text" name="email" [(ngModel)]="orther.Email"  id="email"
+                                    placeholder="Nhập email" class="form-control">
+                                
+                            </div>
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <label for="lienketfacebook">Liên kết facebook</label>
+                                <input  type="text" name="lienketfacebook" [(ngModel)]="orther.LienKetFacebook" id="lienketfacebook"
+                                    placeholder="Nhập đường dẫn đến facebook" class="form-control">
+                            </div>
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <label for="lienketinsta">Liên kết instagram</label>
+                                <input  type="text" name="lienketinsta" id="lienketinsta" [(ngModel)]="orther.LienKetInstagram"
+                                    placeholder="Nhập đường dẫn đến instagram" class="form-control">
+                            </div>
+
+                            <div class="col c-12 m-12 l-12 form-button">
+                                <button type="submit" class="btn-edit">Cập nhật</button>
+                                <!-- <button type="button" class="btn-refresh">Làm mới</button> -->
+                            </div>
+                        </form>
+                    </div>
+
+                    <hr style="color: rgba(0,0,0,0.01);margin: 50px 0;">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="fullImageContainer" class="full-image-container">
+        <span class="close-btn" (click)="closeFullImage()">&times;</span>
+        <img id="fullImage" class="full-image" src="" alt="Hình ảnh đầy đủ">
+    </div>
+</aside>

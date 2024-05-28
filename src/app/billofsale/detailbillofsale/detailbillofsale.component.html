@@ -1,0 +1,233 @@
+<aside>
+    <div class="grid container">
+        <div class="row">
+            <div class="col c-12 m-3 l-3 nav-menu" id="printButtons">
+                <div class="logo">
+                    <a href="index.html" class="link-logo">
+                        <img src="assets/set/img/logo.png" alt="">
+                    </a>
+                </div>
+
+                <div class="box-menu">
+                    <div class="menu-item">
+                        <i class="fa-solid fa-gauge-high"></i><a routerLink="/">Dashbroad</a>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="box-manage-menu">
+                            <i class="fa-solid fa-bars-progress"></i><a
+                             href="#">Quản lý sản phẩm</a>
+                            <i id="icon-angle-right" style="margin-left: 20px;font-size: 12px;" class="fa-solid fa-angle-right"></i>                                  
+                        </div>
+                        <ul class="menu-item__list">
+                            <li>
+                                <a routerLink="/category">Loại sản phẩm</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/products">Sản phẩm</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/color">Màu sắc</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/size">Kích thước</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/brand">Hãng</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="menu-item">
+                        <i class="fa-solid fa-file-import"></i><a routerLink="/importinvoice">Hóa đơn nhập</a>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="box-manage-menu">
+                            <i class="fa-solid fa-ticket"></i><a
+                             href="#">Quản lý phiếu giảm giá</a>
+                            <i id="icon-angle-right" style="margin-left: 20px;font-size: 12px;" class="fa-solid fa-angle-right"></i>                                  
+                        </div>
+                        <ul class="menu-item__list">
+                            <li>
+                                <a routerLink="/categoryvoucher">Loại phiếu giảm giá</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/voucher">Phiếu giảm giá</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="box-manage-menu">
+                            <i class="fa-solid fa-newspaper"></i><a
+                             href="#">Quản lý tin tức</a>
+                            <i id="icon-angle-right" style="margin-left: 20px;font-size: 12px;" class="fa-solid fa-angle-right"></i>                                  
+                        </div>
+                        <ul class="menu-item__list">
+                            <li>
+                                <a routerLink="/categorynews">Chủ đề tin tức</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/news">Tin tức</a>
+                            </li>
+                        </ul>
+                    </div>
+                      
+                    <div class="menu-item">
+                        <i class="fa-solid fa-truck-arrow-right"></i><a routerLink="/transport">Quản lý vận chuyển</a>
+                    </div>
+                    
+                    <div class="menu-item"><i class="fa-solid fa-users"></i><a routerLink="/user">Người dùng</a>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fa-solid fa-user"></i><a routerLink="/supplier">Nhà cung cấp</a>
+                    </div>
+
+                    <div class="menu-item">
+                        <i class="fa-regular fa-credit-card"></i><a routerLink="/billofsale">Hóa đơn bán</a>
+                    </div>
+                    <div class="menu-item" >
+                        <i class="fa-solid fa-message"></i><a
+                            routerLink="/message">Tin nhắn</a>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fa-solid fa-list-check"></i><a
+                            routerLink="/orther">Thông tin khác</a>
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="col c-12 m-9 l-9">
+               <app-header id="printButtons" (navbarClicked)="handleNavbarClick()"></app-header>
+               
+                    <div class="main-content" id="contentToPrint">
+                        <div class="title">
+                            <img class="logo_img" src="https://bizweb.dktcdn.net/100/091/133/themes/880367/assets/logo.png?1676015027577" alt=""> <h4>Chi tiết đơn hàng</h4>
+                        </div>
+                        <hr class="gradient-line">
+                        <div class="address_header">
+                            <div class="location_receiving">
+                                <a href="#"><i class="fa-solid fa-location-dot"></i> Địa chỉ nhận hàng</a>
+                            </div>
+    
+                            <div class="index_receiving">
+                                <p>
+                                    {{ detailbills[0].HoVaTen }}({{ detailbills[0].DienThoaiNhan }})
+                                </p>
+                                <p>
+                                    {{ detailbills[0].DiaChiNhan }}
+                                </p>
+                            </div>
+                        </div>
+    
+                        <div class="box-table">
+                            <table class="chechout_table">
+                                <thead>
+                                    <tr>
+                                        <th>
+                                            Sản phẩm
+                                        </th>
+                                        <th>
+                                            Giá
+                                        </th>
+                                        <th>Số lượng
+                                        </th>
+                                        <th>
+                                            Tổng tiền
+                                        </th>
+    
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr *ngFor="let item of detailbills">
+                                        <td style="display:flex;text-align: center;align-items: center;justify-content: center;border: none;">
+                                            <img style="width: 100px;object-fit: cover;" [src]=" item.DuongDan ? 'http://localhost:8000/' + item.DuongDan : '' " alt=""><p style="margin-left: 10px;">{{ item.TenSanPham +"-"+item.TenMau+"-"+item.TenKichThuoc }}</p>
+                                        </td>
+                                        <td>
+                                            {{ item.GiaKhuyenMai | currency:'VND':true}}
+                                        </td>
+                                        <td>
+                                            {{ item.SoLuong }}
+                                        </td>
+
+                                        <td>
+                                            {{ (item.GiaKhuyenMai * item.SoLuong) | currency:'VND':true}}
+                                        </td>
+                                    </tr>
+                                    
+                                  
+    
+                                </tbody>
+                            </table>
+
+                            <div class="transport_box">
+                                <span>Đơn vị vận chuyển</span>
+                                <span>{{ detailbills[0].TenVanChuyen }} - {{ detailbills[0].Gia |currency:'VND':true }}</span>
+                            </div>
+                            
+                            <div class="voucher_box">
+                                <div class="title_voucher">
+                                    <i class="fa-solid fa-ticket"></i> Voucher
+                                </div>
+                                <span class="content_voucher">Mã voucher:   {{ detailbills[0].TenPhieu }}</span>
+                            </div>
+
+                            <div class="box_end_table_checkout">
+                                <div class="box_note_customer">
+                                    <!-- Lời nhắn: <input type="text" value="Sản phẩm đẹp" disabled> -->
+                                </div>
+                                <div class="box_total_money">
+                                    Tổng tiền thanh toán <i>({{ allquantity }}) sản phẩm:</i> <span> {{ getsummoney | currency:'VND':true}}</span>
+                                </div>
+                            </div>                
+                        </div>
+                        <div class="box_foote_checkout">
+                            <div class="box_status">
+                                <div class="element_payment">
+                                    Phương thức thanh toán: <span>{{ detailbills[0].HinhThucThanhToan }}</span>
+                                </div>
+                                <hr style="height: 1px;width: 100%;background-color: rgba(0, 0, 0, 0.1);margin: 15px 0;">
+                                <div class="element_status">
+                                    Trạng thái đơn hàng: <span>{{ (detailbills[0].TrangThai === 0) ? "Đang chờ duyệt" : (detailbills[0].TrangThai === 1) ? "Đang vận chuyển":"Đã giao" }}</span>
+                                </div>
+                            </div>
+
+                            <hr style="height: 1px;width: 100%;background-color: rgba(0, 0, 0, 0.1);margin: 15px 0;">
+
+                            <div class="box_info_summary">
+                                <div class="box_info_customer">
+                                    <p>Tên khách hàng: <span>{{ detailbills[0].HoVaTen }}</span></p>
+                                    <p>Địa chỉ: <span>{{ detailbills[0].DiaChiNhan }}</span></p>
+                                    <!-- <p>Email: <span>nhathoang07032002@gmail.com</span></p> -->
+                                    <p>Số điện thoại: <span>{{ detailbills[0].DienThoaiNhan }}</span></p>
+                                </div>
+                                
+                                <div class="box_info_totalmoney">
+                                    <p>Tổng tiền hàng: <span>{{ getsummoney | currency:'VND':true }}</span></p>
+                                    <p>Tổng giảm giá: <span>{{ discouttotal | currency:'VND' }}</span></p>
+                                    <p>Phí vận chuyển: <span>{{ detailbills[0].Gia | currency:'VND' }}</span></p>
+                                    <p>Tổng thanh toán: <span class="box_info_totalmoney_content">{{ (getsummoney - discouttotal + detailbills[0].Gia ) | currency:'VND':true }}</span></p>
+                                    <div class="box_info_btn" *ngIf="detailbills[0].TrangThai < 2">
+                                        <button (click)="update()" id="printButtons">Duyệt đơn</button>
+                                    </div>
+                                    <button id="printButtons" style="background-color: blue;color: #fff;border: none;border-radius: 5px;padding: 8px 12px; margin-top: 10px; font-size: 14px;display: flex;margin-left: auto;margin-right: auto;cursor: pointer;" (click)="captureScreen()">Xuất ra PDF</button>
+                                </div>
+    
+                            </div>
+                        </div>
+                        
+                    </div>
+                   
+                </div>
+            </div>
+        </div>
+  
+</aside>

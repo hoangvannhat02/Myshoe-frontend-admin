@@ -1,0 +1,423 @@
+<aside>
+    <div class="grid container">
+        <div class="row">
+            <div class="col c-12 m-3 l-3 nav-menu">
+                <div class="logo">
+                    <a href="index.html" class="link-logo">
+                        <img src="assets/set/img/logo.png" alt="">
+                    </a>
+                </div>
+
+                <div class="box-menu">
+                    <div class="menu-item">
+                        <i style="color: rgb(66, 114, 215);" class="fa-solid fa-gauge-high"></i><a style="color: rgb(66, 114, 215);" routerLink="/">Dashbroad</a>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="box-manage-menu">
+                            <i class="fa-solid fa-bars-progress"></i><a href="#">Quản lý sản phẩm</a>
+                            <i id="icon-angle-right" style="margin-left: 20px;font-size: 12px;"
+                                class="fa-solid fa-angle-right"></i>
+                        </div>
+                        <ul class="menu-item__list">
+                            <li>
+                                <a routerLink="/category">Loại sản phẩm</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/products">Sản phẩm</a>
+                            </li>
+                            <li>
+                                <a routerLink="/color">Màu sắc</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/size">Kích thước</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/brand">Hãng</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="menu-item">
+                        <i class="fa-solid fa-file-import"></i><a routerLink="/importinvoice">Hóa đơn nhập</a>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="box-manage-menu">
+                            <i class="fa-solid fa-ticket"></i><a
+                             href="#">Quản lý phiếu giảm giá</a>
+                            <i id="icon-angle-right" style="margin-left: 20px;font-size: 12px;" class="fa-solid fa-angle-right"></i>                                  
+                        </div>
+                        <ul class="menu-item__list">
+                            <li>
+                                <a routerLink="/categoryvoucher">Loại phiếu giảm giá</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/voucher">Phiếu giảm giá</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="box-manage-menu">
+                            <i class="fa-solid fa-newspaper"></i><a
+                             href="#">Quản lý tin tức</a>
+                            <i id="icon-angle-right" style="margin-left: 20px;font-size: 12px;" class="fa-solid fa-angle-right"></i>                                  
+                        </div>
+                        <ul class="menu-item__list">
+                            <li>
+                                <a routerLink="/categorynews">Chủ đề tin tức</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/news">Tin tức</a>
+                            </li>
+                        </ul>
+                    </div>
+                      
+                    <div class="menu-item">
+                        <i class="fa-solid fa-truck-arrow-right"></i><a routerLink="/transport">Quản lý vận chuyển</a>
+                    </div>
+                    
+                    <div class="menu-item"><i class="fa-solid fa-users"></i><a routerLink="/user">Người dùng</a>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fa-solid fa-user"></i><a routerLink="/supplier">Nhà cung cấp</a>
+                    </div>
+
+                    <div class="menu-item">
+                        <i class="fa-regular fa-credit-card"></i><a routerLink="/billofsale">Hóa đơn bán</a>
+                    </div>
+                    <div class="menu-item" >
+                        <i class="fa-solid fa-message"></i><a
+                            routerLink="/message">Tin nhắn</a>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fa-solid fa-list-check"></i><a
+                            routerLink="/orther">Thông tin khác</a>
+                    </div>
+                  
+                </div>
+            </div>
+
+            <div class="col c-12 m-9 l-9">
+                <app-header (navbarClicked)="handleNavbarClick()"></app-header>
+                <div class="main-content">
+                    <div class="title">
+                        <h3>Quản lý sản phẩm</h3>
+                    </div>
+
+                    <div class="gird box-manage">
+                        <form class="row" [formGroup]="formDetailProduct" (ngSubmit)="create()" action="" method="post">
+                            <!-- <input type="number" name="productid" id="productid" style="display: none;"> -->
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <label for="masanpham">Mã sản phẩm</label>
+                                <input type="text" name="masanpham" [(ngModel)]="detailproductobj.MaSanPham"
+                                    id="masanpham" placeholder="Nhập thông tin sản phẩm" class="form-control" disabled>
+                            </div>
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <label for="mau">Màu</label>
+                                <select name="mau" [(ngModel)]="detailproductobj.MaMau" formControlName="MaMau" id="mau" class="form-control">
+                                    <option *ngFor="let item of colors" [value]="item.MaMau">{{item.TenMau}}</option>
+                                </select>
+                                <div class="message-error" *ngIf="formDetailProduct.get('MaMau')?.touched || submitted">
+                                    <ng-container *ngIf="formDetailProduct.get('MaMau')?.hasError('required') || formDetailProduct.get('MaMau')?.hasError('min')">
+                                        {{ 'Không được để trống' }}
+                                    </ng-container>
+                                </div>
+                            </div>
+
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <label for="kichthuoc">Kích thước</label>
+                                <select name="kichthuoc" [(ngModel)]="detailproductobj.MaKichThuoc" formControlName="MaKichThuoc" id="kichthuoc"
+                                    class="form-control">
+                                    <option *ngFor="let item of sizes" [value]="item.MaKichThuoc">{{item.TenKichThuoc}}
+                                    </option>
+                                </select>
+                                <div class="message-error" *ngIf="formDetailProduct.get('MaKichThuoc')?.touched || submitted">
+                                    <ng-container *ngIf="formDetailProduct.get('MaKichThuoc')?.hasError('required') || formDetailProduct.get('MaKichThuoc')?.hasError('min')">
+                                        {{ 'Không được để trống' }}
+                                    </ng-container>
+                                </div>
+                            </div>
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <label for="giaban">Giá bán</label>
+                                <input type="number" name="giaban" [(ngModel)]="detailproductobj.GiaBan" formControlName="GiaBan" id="giaban"
+                                    placeholder="Nhập giá sản phẩm" class="form-control">
+                                    <div class="message-error" *ngIf="formDetailProduct.get('GiaBan')?.touched || submitted">
+                                        <ng-container *ngIf="formDetailProduct.get('GiaBan')?.hasError('required')">
+                                            {{ 'Không được để trống' }}
+                                        </ng-container>
+                                        <ng-container *ngIf="formDetailProduct.get('GiaBan')?.hasError('min')">
+                                            {{ 'Giá bán phải lớn hơn 0' }}
+                                        </ng-container>
+                                    </div>
+                            </div>
+
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <label for="giakhuyenmai">Giá khuyến mại</label>
+                                <input type="number" name="giakhuyenmai" formControlName="GiaKhuyenMai" [(ngModel)]="detailproductobj.GiaKhuyenMai"
+                                    id="giakhuyenmai" placeholder="Nhập giá khuyến mại sản phẩm" class="form-control">
+                                    <div class="message-error" *ngIf="formDetailProduct.get('GiaKhuyenMai')?.touched || submitted">
+                                        <ng-container *ngIf="formDetailProduct.get('GiaKhuyenMai')?.hasError('required')">
+                                            {{ 'Không được để trống' }}
+                                        </ng-container>
+                                        <ng-container *ngIf="formDetailProduct.get('GiaKhuyenMai')?.hasError('min')">
+                                            {{ 'Giá khuyến mãi phải lớn hơn 0' }}
+                                        </ng-container>
+                                        <ng-container *ngIf="formDetailProduct.get('GiaKhuyenMai')?.hasError('notGreaterThan')">
+                                            {{ 'Giá khuyến mãi phải nhỏ hơn giá bán' }}
+                                        </ng-container>
+                                    </div>
+                            </div>
+
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <label for="soluong">Số lượng tồn (* Cập nhật trong hóa đơn nhập)</label>
+                                <input type="number" name="soluong"
+                                    id="soluong" value="0" class="form-control" disabled>
+                            </div>
+
+                            <div class="col c-12 m-12 l-12 form-button">
+                                <button type="submit" class="btn-edit">Thêm mới</button>
+                                <button type="button" class="btn-refresh" (click)="reload()">Làm mới</button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <hr style="color: rgba(0,0,0,0.01);margin: 10px 0;">
+                    <div class="box-search">
+                        <div class="datatable_length">
+                            <label for="">Lọc theo màu
+                                <select [(ngModel)]="selectedColor" (change)="filterByColorAndSize(selectedColor,selectedSize)">
+                                    <option value="" style="display:none;">Chọn màu</option>
+                                    <option *ngFor="let item of filterColor" [value]="item.MaMau">{{ item.TenMau }}</option>
+                                </select>
+                                
+                            </label>
+
+                            <label style="margin-left: 10px;" for="">Lọc theo size
+                                <select [(ngModel)]="selectedSize" (change)="filterByColorAndSize(selectedColor,selectedSize)">
+                                    <option value="" style="display:none;">Chọn size</option>
+                                    <option *ngFor="let item of filterSize" [value]="item.MaKichThuoc">{{ item.TenKichThuoc }}</option>
+                                </select>
+                            </label>
+                            <span style="margin-left: 10px;cursor: pointer;color: #9999;" (click)="reloadFilter()">
+                                <i title="Load lại chọn kích thước về không chọn" class="fa-solid fa-rotate-right"></i>
+                            </span>
+                        </div>
+                        <form action="">
+                            <span>Search: </span><input type="text" [(ngModel)]="searchKeyWord" (input)="search()"
+                                placeholder="Nhập thông tin tìm kiếm" [ngModelOptions]="{standalone: true}"
+                               >
+                        </form>
+                    </div>
+                    <div class="box-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>
+                                        <input type="checkbox" [(ngModel)]="checkedAll" (change)="selectedAll($event)"> All
+                                    </th>
+                                    <th>
+                                        Mã chi tiết sản phẩm
+                                    </th>
+                                    <th>
+                                        Tên sản phẩm
+                                    </th>
+                                    <th>Tên màu</th>
+                                    <th>
+                                        Kích thước
+                                    </th>
+                                    <th>
+                                        Hình ảnh
+                                    </th>
+                                    <th>
+                                        Giá bán
+                                    </th>
+                                    <th>
+                                        Giá khuyến mại
+                                    </th>
+                                    <th>Số lượng tồn</th>
+                                    <th>
+                                        <ng-container *ngIf="selectedItems.length>0">
+                                            <button (click)="deleteChecked()">Xóa all</button>
+                                        </ng-container>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of filteredProducts">
+                                    <td>
+                                        <input type="checkbox" [checked]="isChecked(item)"
+                                            (change)="checkedItem($event,item)">
+                                    </td>
+                                    <td>
+                                        {{ item.MaChiTietSanPham }}
+                                    </td>
+                                    <td>
+                                        {{ item.TenSanPham }}
+                                    </td>
+
+                                    <td>
+                                        {{ item.TenMau }}
+                                    </td>
+
+                                    <td>
+                                        {{ item.TenKichThuoc }}
+                                    </td>
+                                    <td>
+                                        <img id="modalimg" style="width:40px;cursor: pointer;" (click)="editimg(item.MaMau,item.MaChiTietSanPham)" [src]="item.duongdan ? ('http://localhost:8000/'+item.duongdan) : '/assets/set/img/user7.jpg'" alt="">
+                                    </td>
+                                    <td>
+                                        {{ item.GiaBan }}
+                                    </td>
+                                    <td>
+                                        {{ item.GiaKhuyenMai }}
+                                    </td>
+                                    <td>
+                                        {{ item.SoLuongTon }}
+                                    </td>
+                                    <td>
+                                         <i id="modal" (click)="edit(item.MaChiTietSanPham)" class="fa-solid fa-pencil"></i><i (click)="delete(item.MaChiTietSanPham)" class="fa-solid fa-trash"></i>
+                                    </td>
+                                </tr>
+
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="showmodel" data-target="#modal">
+                        <div class="showmodel__content">
+                            <i class="fa-solid fa-x iconclose" (click)="closeModel()"></i>
+                            <div class="gird box-manage">
+                                <form class="row" action="" method="post">
+                                    <input type="number" name="machitietsanpham" id="machitietsanpham" [ngModel]="detailproduct.MaChiTietSanPham"
+                                        style="display: none;">
+                                    <div class="col c-12 m-12 l-12 form-input">
+                                        <h1 style="margin-bottom: 10px;">Mã chi tiết sản phẩm: {{ detailproduct.MaChiTietSanPham }}</h1>
+                                    </div>
+
+                                    <div class="col c-12 m-6 l-6 form-input">
+                                        <label for="masanpham">Mã sản phẩm</label>
+                                        <input type="text" name="masanpham" [(ngModel)]="detailproduct.MaSanPham"
+                                            id="masanpham" placeholder="Nhập thông tin sản phẩm" class="form-control" disabled>
+                                    </div>
+                                    <div class="col c-12 m-6 l-6 form-input">
+                                        <label for="mau">Màu</label>
+                                        <select name="mau" [(ngModel)]="detailproduct.MaMau" id="mau" class="form-control">
+                                            <option *ngFor="let item of colors" [value]="item.MaMau">{{item.TenMau}}</option>
+                                        </select>
+                                    </div>
+        
+                                    <div class="col c-12 m-6 l-6 form-input">
+                                        <label for="kichthuoc">Kích thước</label>
+                                        <select name="kichthuoc" [(ngModel)]="detailproduct.MaKichThuoc" id="kichthuoc"
+                                            class="form-control">
+                                            <option *ngFor="let item of sizes" [value]="item.MaKichThuoc">{{item.TenKichThuoc}}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <div class="col c-12 m-6 l-6 form-input">
+                                        <label for="giaban">Giá bán</label>
+                                        <input type="number" name="giaban" [(ngModel)]="detailproduct.GiaBan" id="giaban"
+                                            placeholder="Nhập giá sản phẩm" class="form-control">
+                                    </div>
+        
+                                    <div class="col c-12 m-6 l-6 form-input">
+                                        <label for="giakhuyenmai">Giá khuyến mại</label>
+                                        <input type="number" name="giakhuyenmai" [(ngModel)]="detailproduct.GiaKhuyenMai"
+                                            id="giakhuyenmai" placeholder="Nhập giá khuyến mại sản phẩm" class="form-control">
+                                    </div>
+        
+                                    <div class="col c-12 m-6 l-6 form-input">
+                                        <label for="soluong">Số lượng tồn</label>
+                                        <input type="number" name="soluong"
+                                            id="soluong" value="0" [ngModel]="detailproduct.SoLuongTon" class="form-control" disabled>
+                                    </div>        
+                                    
+                                    <div class="col c-12 m-12 l-12 form-button" style="margin-bottom: 20px;">
+                                        <button type="button" (click)="update()" class="btn-edit">Sửa</button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="showmodel" data-target="#modalimg">
+                        <div class="showmodel__content">
+                            <i class="fa-solid fa-x iconclose" (click)="closeModel()"></i>
+                            <div class="gird box-manage">
+                                <form class="row" action="" method="post">
+                                    <input type="number" name="machitietsanpham" id="machitietsanpham" [ngModel]="listimg.MaChiTietSanPham"
+                                        style="display: none;">
+                                    <div class="col c-12 m-12 l-12 form-input">
+                                        <h1 style="margin-bottom: 10px;">Mã chi tiết sản phẩm: {{ listimg.MaChiTietSanPham }}</h1>
+                                    </div>
+
+                                    <input type="number" name="mamau" id="mamau" [ngModel]="listimg.MaMau"
+                                        style="display: none;">
+                                    <div class="col c-12 m-12 l-12 form-input">
+                                        <h1 style="margin-bottom: 10px;">Mã màu: {{ listimg.MaMau }}</h1>
+                                    </div>
+
+                                    <div class="col c-12 m-6 l-6 form-input" style="margin-top: 20px;">
+                                        <input #fileinput type="file" (change)="upfile($event)" id="file" />
+                                        <div style="margin-top: 5px;">
+                                            <img [src]="imageSrc" style="width: 100px;" alt="">
+                                        </div>
+                                        <!-- <button type="button" (click)="uploadFile()">Upload</button> -->
+        
+                                    </div>
+                                    
+                                    <div class="col c-12 m-12 l-12 form-button" style="margin-bottom: 20px;">
+                                        <button type="button" (click)="updateimg()" class="btn-edit">{{ btnimg }}</button>
+                                    </div>
+
+                                    <div class="col c-12 m-12 l-12">
+                                        <div class="box-table">
+                                            <table>
+                                                <thead>
+                                                    <tr>
+                                                        
+                                                        <th>
+                                                            Hình ảnh
+                                                        </th>
+
+
+                                                        <th>
+                                                            Chức năng
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr *ngFor="let item of listimgs">
+
+                                                        <td>
+                                                            <img [src]="('http://localhost:8000/' + item.DuongDan) ? ('http://localhost:8000/' + item.DuongDan): '/assets/set/img/user7.jpg'" style="width: 100px;" >
+                                                        </td>
+
+                                                        <td>
+                                                            <i (click)="getimgbyid(item.MaAnh)" class="fa-solid fa-pencil"></i>
+                                                            <i (click)="destroyimgbyid(item.MaAnh,item.DuongDan)" class="fa-solid fa-trash"></i>
+                                                        </td>
+                                                    </tr>
+
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+
+
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</aside>

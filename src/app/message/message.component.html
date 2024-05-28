@@ -1,0 +1,169 @@
+<aside>
+    <div class="grid container">
+        <div class="row">
+            <div class="col c-12 m-3 l-3 nav-menu">
+                <div class="logo">
+                    <a href="index.html" class="link-logo">
+                        <img src="assets/set/img/logo.png" alt="">
+                    </a>
+                </div>
+
+                <div class="box-menu">
+                    <div class="menu-item">
+                        <i class="fa-solid fa-gauge-high"></i><a routerLink="/">Dashbroad</a>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="box-manage-menu">
+                            <i class="fa-solid fa-bars-progress"></i><a href="#">Quản lý sản phẩm</a>
+                            <i id="icon-angle-right" style="margin-left: 20px;font-size: 12px;"
+                                class="fa-solid fa-angle-right"></i>
+                        </div>
+                        <ul class="menu-item__list">
+                            <li>
+                                <a routerLink="/category">Loại sản phẩm</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/products">Sản phẩm</a>
+                            </li>
+                            <li>
+                                <a routerLink="/color">Màu sắc</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/size">Kích thước</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/brand">Hãng</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="menu-item">
+                        <i class="fa-solid fa-file-import"></i><a routerLink="/importinvoice">Hóa đơn nhập</a>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="box-manage-menu">
+                            <i class="fa-solid fa-ticket"></i><a href="#">Quản lý phiếu giảm giá</a>
+                            <i id="icon-angle-right" style="margin-left: 20px;font-size: 12px;"
+                                class="fa-solid fa-angle-right"></i>
+                        </div>
+                        <ul class="menu-item__list">
+                            <li>
+                                <a routerLink="/categoryvoucher">Loại phiếu giảm giá</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/voucher">Phiếu giảm giá</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="menu-item">
+                        <div class="box-manage-menu">
+                            <i class="fa-solid fa-newspaper"></i><a href="#">Quản lý tin tức</a>
+                            <i id="icon-angle-right" style="margin-left: 20px;font-size: 12px;"
+                                class="fa-solid fa-angle-right"></i>
+                        </div>
+                        <ul class="menu-item__list">
+                            <li>
+                                <a routerLink="/categorynews">Chủ đề tin tức</a>
+                            </li>
+
+                            <li>
+                                <a routerLink="/news">Tin tức</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="menu-item">
+                        <i class="fa-solid fa-truck-arrow-right"></i><a routerLink="/transport">Quản lý vận chuyển</a>
+                    </div>
+
+                    <div class="menu-item"><i class="fa-solid fa-users"></i><a routerLink="/user">Người dùng</a>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fa-solid fa-user"></i><a routerLink="/supplier">Nhà cung cấp</a>
+                    </div>
+
+                    <div class="menu-item">
+                        <i class="fa-regular fa-credit-card"></i><a routerLink="/billofsale">Hóa đơn bán</a>
+                    </div>
+                    <div class="menu-item" style="color: rgb(66, 114, 215);">
+                        <i class="fa-solid fa-message"></i><a style="color: rgb(66, 114, 215);"
+                            routerLink="/message">Tin nhắn</a>
+                    </div>
+                    <div class="menu-item">
+                        <i class="fa-solid fa-list-check"></i><a
+                            routerLink="/orther">Thông tin khác</a>
+                    </div>
+                  
+                </div>
+            </div>
+
+            <div class="col c-12 m-9 l-9">
+                <app-header (navbarClicked)="handleNavbarClick()"></app-header>
+                <div class="main-content">
+                    <div class="title">
+                        <h3>Quản lý tin nhắn</h3>
+                    </div>
+
+                    <div class="gird">
+                        <div class="row">
+                            <div class="c-6 m-4 l-4 box_customer">
+                                <input type="text" (input)="findUser($event)" placeholder="Tìm kiếm thông tin khách hàng">
+
+                                <hr style="color: rgba(0,0,0,0.1); margin: 12px 0;opacity: 0.2;">
+
+                                <div class="item_customer active" [ngClass]="{'active': !(item.quantityunread == 0)}" *ngFor="let item of users" (click)="chosseRoomChat(item)">
+                                    <img [src]="item.avatar ? 'http://localhost:3000/'+item.avatar : '/assets/set/img/user7.jpg'" alt="">
+                                    <sub [hidden]="item.quantityunread == 0" class="unread_message">{{ item.quantityunread }}</sub>
+                                    <div class="info_message">
+                                        <h3>{{ item.username }}</h3>
+                                        <p>{{ item.lastMessage.content }}</p>
+                                    </div>
+                                    <span>{{ item.lastMessage.timestamp | timeAgo }}</span>
+                                </div>
+                              
+                            </div>
+
+                            <div class="c-6 m-8 l-8 box_message">
+                                <div class="box_message__title">
+                                    <h3>Phòng chat</h3>
+
+                                    <!-- <span>
+                                        <i class="fa-solid fa-broom" title="Xóa lịch sử đoạn chat"></i>
+                                        <i class="fa-solid fa-xmark" title="Đóng đoạn chat"></i>
+                                    </span> -->
+                                </div>
+
+                                <div class="box_message__content">
+                                    <div *ngFor="let message of dataMessages,let i = index" [ngClass]="message.senderId.includes('customer') ? 'box_info_message' : 'box_info_message feedback'">
+                                        <img [src]="message.avatar ? 'http://localhost:8000/' + message.avatar : '/assets/set/img/user7.jpg'" alt="">
+                                        <span>
+                                          <h5>{{ message.username }}</h5>
+                                          <p>{{ message.content }}</p>
+                                          <span>{{ message.timestamp | timeAgo }}</span>
+                                        </span>
+                                      </div>
+                                </div>
+
+                                <hr style="opacity: 0.5;">
+                                <div class="box_send_message">
+                                    <input type="text" name="sendmessage" [(ngModel)]="sendvalue" (keyup.enter)="addMessage()" id="sendmessage">
+                                    <i class="fa-regular fa-paper-plane" (click)="addMessage()"></i>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</aside>

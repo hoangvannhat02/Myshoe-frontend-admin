@@ -1,0 +1,19 @@
+.box_chart_line{
+    display: block;
+}
+
+.chose_year{
+    margin-bottom: 20px;
+}
+
+.chose_month{
+    margin-right: 30%;
+}
+
+::ng-deep .legend-wrap{
+    width: 200px;
+}
+
+.rate_in_range_dayandmonth{
+  width: 400px;
+}

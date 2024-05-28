@@ -1,0 +1,65 @@
+<div class="main-header">
+    <div class="navbar_content" (click)="onClickNavbar()">
+        <i class="fa-solid fa-bars"></i>
+    </div>
+    <!-- <div class="content-header">
+        <form class="search-header">
+            <input type="text" name="search" id="search" placeholder="Nhập thông tin tìm kiếm">
+            <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </form>
+    </div> -->
+
+    <div class="messange">
+        <div class="mes" (click)="redirectMessage()">
+            <i class="fa-solid fa-message"></i>
+            <span *ngIf="quantityMessage > 0">{{ quantityMessage }}</span>
+        </div>
+
+        <!-- <div class="mail">
+            <i class="fa-solid fa-envelope"></i>
+            <span>1</span>
+        </div>
+
+        <div class="noitice">
+            <i class="fa-solid fa-bell"></i>
+            <span>3</span>
+        </div> -->
+    </div>
+
+    <div class="box-user">
+        <img class="img_user" [src]="user.Anh ? 'http://localhost:8000/'+user.Anh : ''" alt="">
+        <span class="name_user">{{ user.HoTen }}</span>
+        <i class="fa-solid fa-angle-down"></i>
+    </div>
+
+    <div class="info-user">
+        <div class="header-info">
+            <img class="img_user" [src]="user.Anh ? 'http://localhost:8000/'+user.Anh : ''" alt="">
+            <div class="info-title">
+                <span class="name_user">{{ user.HoTen }}</span>
+                <p class="mail_user">{{ user.Email }}</p>
+            </div>
+        </div>
+        <!-- <div class="box-info-item account">
+            <i class="fa-solid fa-user"></i>
+            <a href="#">Account</a>
+        </div>
+
+        <div class="box-info-item setting">
+            <i class="fa-solid fa-gear"></i>
+            <a href="#">Setting</a>
+        </div> -->
+
+        <!-- <div class="box-info-item billing">
+            <i class="fa-solid fa-money-bill"></i>
+            <a href="#">
+                Billing
+            </a>
+        </div> -->
+
+        <div class="box-info-item log">
+            <i class="fa-solid fa-power-off"></i>
+            <a (click)="logout()" href="#">Logout</a>
+        </div>
+    </div>
+</div>

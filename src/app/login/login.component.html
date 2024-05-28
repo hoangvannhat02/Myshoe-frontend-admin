@@ -1,0 +1,65 @@
+<main class="box_login">
+    
+    <div class="container" id="container">
+        <div class="form-container sign-up-container">
+            <form action="#" (ngSubmit)="onSubmitRegistration()">
+                <h1>Get Password Your Account</h1>
+               
+                <span>input your email</span>
+                <label for="email">
+                    <input [(ngModel)]="user_registration.email" (input)="onInputRegisEmail()" type="email" name="email" placeholder="Email" required/>
+                    <span *ngIf="isEmailResgisInvalid" class="message">{{ message_resgistration.email }}</span>
+                </label>
+             
+                <button type="submit">Get password</button>
+            </form>
+        </div>
+        <div class="form-container sign-in-container">
+            <form (ngSubmit)="onSubmit()" action="#" class="form-login">
+                <h1>Sign in</h1>
+                <!-- <div class="social-container">
+                    <a href="#" class="social"><i class="fab fa-facebook-f"></i></a>
+                    <a href="#" class="social"><i class="fab fa-google-plus-g"></i></a>
+                </div>
+                <span>or use your account</span> -->
+                <label for="email">
+                    <input [(ngModel)]="user.email" (input)="onInputEmail()" type="email" name="email" placeholder="Email " required/>
+                    <span *ngIf="isEmailInvalid" class="message">{{ message.email }}</span>
+                </label>
+                <label for="password">
+                    <input [(ngModel)]="user.password" type="password" (input)="onInputPassWord()" placeholder="Password" [ngModelOptions]="{standalone: true}" required/>
+                    <span *ngIf="isPasswordInvalid" class="message">{{ message.password }}</span>
+                </label>
+                <!-- <a href="#">Forgot your password?</a> -->
+                <button type="submit">Sign In</button>
+            </form>
+        </div>
+        <div class="overlay-container">
+            <div class="overlay">
+                <div class="overlay-panel overlay-left">
+                    <h1>Welcome Back!</h1>
+                    <p>To keep connected with us please login with your personal info</p>
+                    <button class="ghost" id="signIn">Sign In</button>
+                </div>
+                <div class="overlay-panel overlay-right">
+                    <h1>Hello, Friend!</h1>
+                    <p>Enter your personal details and start journey with us</p>
+                    <button class="ghost" id="signUp">Forgot your password</button>
+                </div>
+                
+            </div>
+        </div>
+       
+    </div>
+    </main>
+    
+    <!-- <footer>
+        <p>
+            Created with <i class="fa fa-heart"></i> by
+            <a target="_blank" href="https://florin-pop.com">Florin Pop</a>
+            - Read how I created this and how you can join the challenge
+            <a target="_blank" href="https://www.florin-pop.com/blog/2019/03/double-slider-sign-in-up-form/">here</a>.
+        </p>
+    </footer> -->
+    
+    
