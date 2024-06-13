@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import jsPDF from 'jspdf';
 import html2canvas from 'html2canvas';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastService } from 'src/app/myservice/toast.service';
 
 @Component({
   selector: 'app-detailbillofsale',
@@ -24,12 +25,11 @@ export class DetailbillofsaleComponent {
   detailbills: any[] = [];
   mota = "";
   btn: string = "Thêm mới";
-
-
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private toastmsg:ToastService
   ) { };
 
   ngOnInit(): void {
@@ -91,10 +91,16 @@ export class DetailbillofsaleComponent {
             console.log(response);
 
             if (response.result) {
-              // alert("Sửa số lượng thành công")
+              // this.toastmsg.showToast({
+              //   title:"Thêm thành công",
+              //   type:"success"
+              // })
             }
             else {
-              // alert("Duyệt thất bại")
+              this.toastmsg.showToast({
+                title:"Lỗi",
+                type:"error"
+              })
             }
           }, (error) => {
             console.error(error);
@@ -109,11 +115,16 @@ export class DetailbillofsaleComponent {
 
       this.http.post("http://localhost:8000/admin/billofsale/update", params).subscribe((response: any) => {
         if (response.result) {
-          alert(response.message)
-          // this.router.navigate(['/billofsale']);
+          this.toastmsg.showToast({
+            title:"Duyệt thành công",
+            type:"success"
+          })
         }
         else {
-          alert("Duyệt thất bại")
+          this.toastmsg.showToast({
+            title:"Lỗi",
+            type:"error"
+          })
         }
       }, (error) => {
         console.error(error);

@@ -114,7 +114,7 @@
                     <div class="gird box-manage">
                         <form class="row" [formGroup]="formVoucher" (ngSubmit)="add()" action="" method="post">
                             
-                            <div class="col c-12 m-6 l-6 form-input">
+                            <!-- <div class="col c-12 m-6 l-6 form-input">
                                 <label for="loaiphieu">Loại phiếu* (Phần trăm, VND)</label>
                                 <input [(ngModel)]="categoryvoucherobj.LoaiPhieu" type="text" formControlName="LoaiPhieu" name="loaiphieu" id="loaiphieu"
                                     placeholder="Nhập loại phiếu" class="form-control">
@@ -124,6 +124,19 @@
                                         </ng-container>
     
                                     </div>
+                            </div> -->
+                            <div class="col c-12 m-6 l-6 form-input">
+                                <label for="loaiphieu">Loại phiếu</label>
+                                <select [(ngModel)]="categoryvoucherobj.LoaiPhieu" name="loaiphieu" formControlName="LoaiPhieu" class="form-control">
+                                    <option value="" disabled selected hidden>Chọn loại phiếu</option>
+                                    <option value="Phần trăm">Phần trăm</option>
+                                    <option value="VND">VND</option>
+                                </select>
+                                <div class="message-error" *ngIf="formVoucher.get('LoaiPhieu')?.touched || submitted">
+                                    <ng-container *ngIf="formVoucher.get('LoaiPhieu')?.hasError('required')">
+                                        {{ 'Không được để trống' }}
+                                    </ng-container>
+                                </div>
                             </div>
 
                             <div class="col c-12 m-6 l-6 form-input">
@@ -179,7 +192,7 @@
                     <hr style="color: rgba(0,0,0,0.01);margin: 10px 0;">
                     <div class="box-search">
                         <div class="datatable_length">
-                            <label for="">Show
+                            <label for="">Hiển thị
                                 <select [(ngModel)]="filterobj.itemsperpage" (change)="search()">
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -189,11 +202,11 @@
                                     <option value="20">20</option>
                                     <option value="30">30</option>
                                 </select>
-                                Entries
+                                Bản ghi
                             </label>
                         </div>
                         <form action="">
-                            <span>Search: </span><input type="text" [(ngModel)]="filterobj.searchkeyword"
+                            <span>Tìm kiếm: </span><input type="text" [(ngModel)]="filterobj.searchkeyword"
                                 (input)="search()" placeholder="Nhập thông tin tìm kiếm"
                                 [ngModelOptions]="{standalone: true}">
                         </form>
@@ -207,7 +220,7 @@
                                         <input type="checkbox" [(ngModel)]="checkedAll" (change)="selectedAll($event)"> All
                                     </th>
                                     <th>
-                                        Mã loại giảm giá
+                                        STT
                                     </th>
                                     <th>
                                         Loại giảm giá
@@ -230,26 +243,26 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let item of categoryvouchers">
+                                <tr *ngFor="let item of categoryvouchers,let i = index">
                                     <td>
                                         <input type="checkbox" [checked]="isChecked(item)"
                                             (change)="checkedItem($event,item)">
                                     </td>
                                     <td>
-                                        {{ item.MaLoaiPhieu }}
+                                        {{ i + 1 + (filterobj.pagenumber - 1) * filterobj.itemsperpage }}
                                     </td>
                                     <td>
                                         {{ item.LoaiPhieu }}
                                     </td>
 
                                     <td>
-                                        {{ item.GiaTri }}
+                                        {{ item.GiaTri | number }}
                                     </td>
                                     <td>
-                                        {{ item.GiaTriNhoNhat}}
+                                        {{ item.GiaTriNhoNhat | number}}
                                     </td>
                                     <td>
-                                        {{ item.GiaTriLonNhat }}
+                                        {{ item.GiaTriLonNhat | number}}
                                     </td>
 
                                     <td>
@@ -268,7 +281,7 @@
                                             class="fa-solid fa-angle-left"></i></a>
                                 </li>
                                 <li>
-                                    <a href="#">{{ filterobj.pagenumber }}</a>
+                                    <a>{{ filterobj.pagenumber }}</a>
                                 </li>
                                 <li>
                                     <a href="#" (click)="onNext($event)"
@@ -288,22 +301,30 @@
                                     <div class="col c-12 m-12 l-12 form-input">
                                         <h1 style="margin-bottom: 10px;">Mã loại phiểu giảm giá: {{ categoryvoucher.MaLoaiPhieu }}</h1>
                                     </div>
-                                    <div class="col c-12 m-12 l-12 form-input">
+                                    <!-- <div class="col c-12 m-12 l-12 form-input">
                                         <label for="loaiphieu">Loại phiếu</label>
                                         <input [(ngModel)]="categoryvoucher.LoaiPhieu" type="text" name="loaiphieu" id="loaiphieu"
                                             class="form-control">
+                                    </div> -->
+                                    <div class="col c-12 m-6 l-6 form-input">
+                                        <label for="loaiphieu">Loại phiếu</label>
+                                        <select [(ngModel)]="categoryvoucher.LoaiPhieu" name="loaiphieu" id="loaiphieu" class="form-control">
+                                            <option value="" disabled selected hidden>Chọn loại phiếu</option>
+                                            <option value="Phần trăm">Phần trăm</option>
+                                            <option value="VND">VND</option>
+                                        </select> 
                                     </div>
-                                    <div class="col c-12 m-12 l-12 form-input">
+                                    <div class="col c-12 m-6 l-6 form-input">
                                         <label for="gia">Giá trị</label>
                                         <input [(ngModel)]="categoryvoucher.GiaTri" type="text" name="gia" id="gia"
                                             class="form-control">
                                     </div>
-                                    <div class="col c-12 m-12 l-12 form-input">
+                                    <div class="col c-12 m-6 l-6 form-input">
                                         <label for="giatrinhonhat">Giá trị tối thiểu</label>
                                         <input [(ngModel)]="categoryvoucher.GiaTriNhoNhat" type="text" name="giatrinhonhat" id="giatrinhonhat"
                                             class="form-control">
                                     </div>
-                                    <div class="col c-12 m-12 l-12 form-input">
+                                    <div class="col c-12 m-6 l-6 form-input">
                                         <label for="giatrilonnhat">Giá trị tối đa</label>
                                         <input [(ngModel)]="categoryvoucher.GiaTriLonNhat" type="text" name="giatrilonnhat" id="giatrilonnhat"
                                             class="form-control">

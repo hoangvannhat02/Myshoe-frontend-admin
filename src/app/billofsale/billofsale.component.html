@@ -136,7 +136,7 @@
                             </select>
                         </div>
                         <form action="">
-                            <span>Search: </span><input type="text" [(ngModel)]="filterobj.searchkeyword"
+                            <span>Tìm kiếm: </span><input type="text" [(ngModel)]="filterobj.searchkeyword"
                                 (input)="search()" placeholder="Nhập thông tin tìm kiếm"
                                 [ngModelOptions]="{standalone: true}">
                         </form>
@@ -214,6 +214,7 @@
                                     </td>
 
                                     <td>
+                                        <i *ngIf="item.TrangThai == 1 || item.TrangThai == 0" class="fa-solid fa-check" style="color: green;" (click)="checkbill(item)" title="Duyệt đơn hàng"></i>
                                         <i class="fa-solid fa-eye" title="Xem thông tin chi tiết sản phẩm"
                                         (click)="redirettodetail(item.MaHoaDon)"></i>
                                         <!-- <i (click)="delete(item.MaLoai)" class="fa-solid fa-trash"></i> -->
@@ -230,7 +231,7 @@
                                             class="fa-solid fa-angle-left"></i></a>
                                 </li>
                                 <li>
-                                    <a href="#">{{ filterobj.pagenumber }}</a>
+                                    <a>{{ filterobj.pagenumber }}</a>
                                 </li>
                                 <li>
                                     <a href="#" (click)="onNext($event)"

@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastService } from '../myservice/toast.service';
 
 @Component({
   selector: 'app-transport',
@@ -31,7 +32,8 @@ export class TransportComponent {
     private http: HttpClient,
     private renderer: Renderer2, 
     private el: ElementRef,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toastmsg:ToastService
   ) { 
     this.formTransport = this.fb.group({
       tenvanchuyen: ['', [Validators.required]],
@@ -102,14 +104,20 @@ export class TransportComponent {
     }
     this.http.post("http://localhost:8000/admin/transport/create", obj).subscribe((response: any) => {
       if (response.result) {
-        alert(response.message)
+        this.toastmsg.showToast({
+          title:"Thêm thành công",
+          type:"success"
+        })
         this.loadnew()
         this.formTransport.reset()
         this.submitted = false
         this.search();
       }
       else {
-        alert("thêm thất bại")
+        this.toastmsg.showToast({
+          title:"Có lỗi",
+          type:"error"
+        })
       }
     }, (error) => {
       console.error(error);
@@ -151,17 +159,20 @@ export class TransportComponent {
   }
 
   edit() {
-    console.log(this.transport);
 
-    this.http.post("http://localhost:8000/admin/transport/update", this.transport).subscribe((response: any) => {
-      console.log(response);
-      
+    this.http.post("http://localhost:8000/admin/transport/update", this.transport).subscribe((response: any) => {      
       if (response.result) {
-        alert(response.message)
+        this.toastmsg.showToast({
+          title:"Cập nhật thành công",
+          type:"success"
+        })
         this.getdata();
       }
       else {
-        alert("sửa thất bại")
+        this.toastmsg.showToast({
+          title:"Có lỗi",
+          type:"error"
+        })
       }
     }, (error) => {
       console.error(error);
@@ -173,11 +184,17 @@ export class TransportComponent {
     if (confirm("Bạn có muốn xóa sản phẩm này không?")) {
       this.http.delete("http://localhost:8000/admin/transport/delete/" + id).subscribe((response: any) => {
         if (response.result) {
-          alert(response.message)
+          this.toastmsg.showToast({
+            title:"Xóa thành công",
+            type:"success"
+          })
           this.getdata();
         }
         else {
-          alert("xóa thất bại")
+          this.toastmsg.showToast({
+            title:"Có lỗi",
+            type:"error"
+          })
         }
       }, (error) => {
         console.error(error);

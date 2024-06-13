@@ -2,6 +2,7 @@ import { Component, ViewChild, ElementRef, Renderer2 } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastService } from 'src/app/myservice/toast.service';
 
 @Component({
   selector: 'app-detailproducts',
@@ -14,19 +15,22 @@ export class DetailproductsComponent {
   searchKeyWord = ""
   imageSrc: any;
   currentimageSrc: any;
+  images:any[] = []
   btnimg = "Thêm mới";
   listimg = {
     "MaAnh": "",
     "MaMau": 0,
+    "TenMau": "",
     "MaChiTietSanPham": 0,
-    "DuongDan": ""
+    "DuongDan": "",
+    "MaSanPham":""
   };
 
   filterColor: any[] = []
   filterSize: any[] = []
 
-  selectedSize:any = ""
-  selectedColor:any = ""
+  selectedSize: any = ""
+  selectedColor: any = ""
   listimgs: any;
   selectedFile: any;
   id: any = 0;
@@ -48,7 +52,8 @@ export class DetailproductsComponent {
     "MaKichThuoc": 0,
     "GiaBan": 0,
     "GiaKhuyenMai": 0,
-    "SoLuongTon": 0
+    "SoLuongTon": 0,
+    "TenSanPham":""
   }
 
   allDetailProducts: any[] = []
@@ -56,14 +61,16 @@ export class DetailproductsComponent {
   selectedItems: any[] = [];
   submitted = false
   formDetailProduct: FormGroup
-  filteredProducts:any;
+  filteredProducts: any;
+  dataproductid:any[] = []
 
   constructor(
     private http: HttpClient,
     private route: ActivatedRoute,
     private renderer: Renderer2,
     private fb: FormBuilder,
-    private el: ElementRef
+    private el: ElementRef,
+    private toastmsg: ToastService
   ) {
     this.formDetailProduct = this.fb.group({
       MaMau: [0, [Validators.required, Validators.min(1)]],
@@ -77,6 +84,8 @@ export class DetailproductsComponent {
     this.getdataid(this.id);
     this.getdatacolors();
     this.getdatasizes();
+    this.getallimg()
+    this.getdataproductbyid(this.id)
 
     this.renderer.listen('document', 'click', (event) => {
       // event.preventDefault();
@@ -118,7 +127,8 @@ export class DetailproductsComponent {
       "MaKichThuoc": 0,
       "GiaBan": 0,
       "GiaKhuyenMai": 0,
-      "SoLuongTon": 0
+      "SoLuongTon": 0,
+      "TenSanPham":""
     }
   }
 
@@ -153,6 +163,16 @@ export class DetailproductsComponent {
     }
   }
 
+  getdataproductbyid(id:any){
+    this.http.get("http://localhost:8000/admin/product/databyid/" + id).subscribe((response: any) => {
+      this.dataproductid = response
+      console.log(this.dataproductid);
+      
+    }, (error) => {
+      console.error(error);
+    })
+  }
+
   loadoneimg(mamau: any, mact: any) {
     const obj = {
       "MaMau": mamau,
@@ -161,24 +181,22 @@ export class DetailproductsComponent {
 
     this.http.post("http://localhost:8000/admin/product/dataimgbymanyid", obj).subscribe((response: any) => {
       this.listimgs = response
-      console.log(this.listimgs)
     }, (error) => {
       console.error(error);
     })
   }
 
-  editimg(mamau: any, mact: any) {
+  editimg(mamau: any, mact: any, tenmau: any,masp:any) {
     const obj = {
       "MaMau": mamau,
       "MaChiTietSanPham": mact
     }
 
-    console.log(obj);
-
     this.http.post("http://localhost:8000/admin/product/dataimgbymanyid", obj).subscribe((response: any) => {
-      this.listimg.MaMau = mamau,
-        this.listimg.MaChiTietSanPham = mact;
-      console.log(response);
+      this.listimg.MaMau = mamau;
+      this.listimg.TenMau = tenmau
+      this.listimg.MaChiTietSanPham = mact;
+      this.listimg.MaSanPham = masp
       this.loadimg(this.listimg.MaMau, this.listimg.MaChiTietSanPham);
     }, (error) => {
       console.error(error);
@@ -188,11 +206,12 @@ export class DetailproductsComponent {
   getimgbyid(id: any) {
     this.http.get("http://localhost:8000/admin/product/dataimgbyid/" + id).subscribe((response: any) => {
       this.listimg.MaAnh = response[0].MaAnh;
+      console.log(this.listimg);
+
       this.imageSrc = "http://localhost:8000/" + response[0].DuongDan;
       this.currentimageSrc = response[0].DuongDan;
       this.fileInput.nativeElement.value = '';
       this.btnimg = "Sửa";
-      console.log(response)
     }, (error) => {
       console.error(error);
     })
@@ -204,8 +223,9 @@ export class DetailproductsComponent {
       "MaChiTietSanPham": mact
     }
     this.http.post("http://localhost:8000/admin/product/dataimgbymanyid", obj).subscribe((response: any) => {
-      // this.listimg = response;
       this.listimgs = response.data;
+      console.log(this.listimgs);
+      
       if (!response.result) {
         console.log(response.message)
       }
@@ -215,25 +235,53 @@ export class DetailproductsComponent {
   }
 
   destroyimgbyid(id: any, url: any) {
+    console.log(this.images);
+    
+    const filterproductbyid = this.detailproducts.filter((y:any)=>y.MaMau === Number(this.listimg.MaMau) && y.MaSanPham === Number(this.listimg.MaSanPham) && y.MaChiTietSanPham !== Number(this.listimg.MaChiTietSanPham))
+    console.log(filterproductbyid);
+    
+    const filterdataimgbyid = this.images.filter(product => 
+      filterproductbyid.some((item:any) => 
+        product.MaChiTietSanPham === item.MaChiTietSanPham && 
+        product.MaMau === item.MaMau && product.DuongDan === url
+    ))
+    console.log(id,url,filterdataimgbyid);
+    
     if (confirm("Bạn có chắc muốn xóa không?")) {
       this.http.delete("http://localhost:8000/admin/product/deleteimg/" + id).subscribe((response: any) => {
         if (response.result) {
           this.http.delete("http://localhost:8000/api/deleteImage?imageName=" + url).subscribe((response: any) => {
           }, (error) => {
-            console.error(error);
           })
-          alert(response.message)
+          if(filterdataimgbyid.length>0){
+            filterdataimgbyid.forEach((item:any)=>{
+              console.log(item);
+              
+              this.http.delete("http://localhost:8000/admin/product/deleteimg/" + item.MaAnh).subscribe((response: any) => {
+                console.log(response);
+                
+                this.loadimg(this.listimg.MaMau, this.listimg.MaChiTietSanPham);
+              }, (error) => {
+
+                console.error(error);
+              })
+            })
+          }
+          this.toastmsg.showToast({
+            title: response.message,
+            type: "success"
+          })
           this.loadimg(this.listimg.MaMau, this.listimg.MaChiTietSanPham);
         }
         else {
-          alert("xóa thất bại")
-          console.log(response.message);
+          this.toastmsg.showToast({
+            title: "Lỗi",
+            type: "warning"
+          })
         }
       }, (error) => {
         console.error(error);
       })
-
-
     }
   }
 
@@ -251,16 +299,56 @@ export class DetailproductsComponent {
         }
         if (path && this.btnimg === 'Thêm mới') {
           if (this.fileInput.nativeElement.value === '') {
-            alert("Bạn chưa chọn tệp cần upload")
+            this.toastmsg.showToast({
+              title: "Chưa chọn tệp",
+              type: "warning"
+            })
           }
           else {
+            const filterproductbyid = this.detailproducts.filter((y:any)=>y.MaMau === Number(this.listimg.MaMau) && y.MaSanPham === Number(this.listimg.MaSanPham) && y.MaChiTietSanPham !== Number(this.listimg.MaChiTietSanPham))
+            
             this.http.post("http://localhost:8000/admin/product/createimg", param).subscribe((response: any) => {
               if (response.result) {
+               
+                const obj = {
+                  "MaMau": this.listimg.MaMau,
+                  "MaChiTietSanPham": this.listimg.MaChiTietSanPham
+                }
+                this.http.post("http://localhost:8000/admin/product/dataimgbymanyid", obj).subscribe((response: any) => {
+                  this.listimgs = response.data;
+                  if(filterproductbyid.length > 0){
+                    filterproductbyid.forEach((item:any)=>{
+                      let param = {
+                        "MaMau": item.MaMau,
+                        "MaChiTietSanPham": item.MaChiTietSanPham,
+                        "DuongDan": this.listimgs[this.listimgs.length-1].DuongDan
+                      }
+                      this.http.post("http://localhost:8000/admin/product/createimg", param).subscribe((response: any) => {
+                        if (response.result) {
+                          this.getdataid(this.detailproductobj.MaSanPham);
+                          this.loadimg(this.listimg.MaMau, this.listimg.MaChiTietSanPham);
+                          this.getallimg()
+                        }
+                      }, (error) => {
+                        console.error(error);
+                      })
+  
+                    })
+                  }
+                  
+                }, (error) => {
+                  console.error(error);
+                })
+                this.getallimg()
                 this.loadimg(this.listimg.MaMau, this.listimg.MaChiTietSanPham);
                 this.getdataid(this.id)
-                alert("Thêm thành công");
+                this.toastmsg.showToast({
+                  title: "Thêm thành công",
+                  type: "success"
+                })
                 this.imageSrc = '';
                 this.fileInput.nativeElement.value = '';
+                
               }
             }, (error) => {
               console.error(error);
@@ -269,21 +357,25 @@ export class DetailproductsComponent {
         }
 
         if (path && this.btnimg === 'Sửa') {
-          console.log(this.currentimageSrc);
           if (this.fileInput.nativeElement.value === '') {
-            alert("Bạn chưa chọn tệp cần upload")
+            this.toastmsg.showToast({
+              title: "Chưa chọn tệp",
+              type: "warning"
+            })
           }
           else {
             this.http.delete("http://localhost:8000/api/deleteImage?imageName=" + this.currentimageSrc).subscribe((response: any) => {
               if (response.success) {
                 this.http.post("http://localhost:8000/admin/product/updateimg", param).subscribe((response: any) => {
                   if (response.result) {
-
                     this.loadimg(this.listimg.MaMau, this.listimg.MaChiTietSanPham);
                     this.imageSrc = '';
                     this.fileInput.nativeElement.value = '';
                     this.getdataid(this.id)
-                    alert("Sửa thành công");
+                    this.toastmsg.showToast({
+                      title: "Sửa thành công",
+                      type: "success"
+                    })
                   }
                 }, (error) => {
                   console.error(error);
@@ -299,7 +391,10 @@ export class DetailproductsComponent {
       })
     }
     else {
-      alert("Bạn chưa chọn tệp cần upload")
+      this.toastmsg.showToast({
+        title: "Chưa chọn tệp",
+        type: "warning"
+      })
     }
   }
 
@@ -310,8 +405,6 @@ export class DetailproductsComponent {
 
       this.http.post("http://localhost:8000/upload", formData).subscribe((response: any) => {
         let path = response.url;
-
-        console.log(response.url)
         this.imageSrc = "http://localhost:8000/" + path;
       }, (error) => {
         console.error(error);
@@ -327,6 +420,14 @@ export class DetailproductsComponent {
     })
   }
 
+  getallimg(){
+    this.http.get("http://localhost:8000/admin/product/dataimg").subscribe((response: any) => {
+      this.images = response;
+    }, (error) => {
+      console.error(error);
+    })
+  }
+
   getdatasizes() {
     this.http.get("http://localhost:8000/admin/size/data").subscribe((response: any) => {
       this.sizes = response;
@@ -336,20 +437,21 @@ export class DetailproductsComponent {
   }
 
   getdataid(id: any) {
-    this.detailproductobj.MaSanPham = id;
+    this.detailproductobj.MaSanPham = id;    
     this.http.get("http://localhost:8000/admin/detailproduct/databyproductid/" + id).subscribe((response: any) => {
-      if (response.result) {
+      console.log(response);
         this.detailproducts = response.data;
         this.filteredProducts = [...this.detailproducts];
+        console.log(this.detailproducts);
+        
         this.filterColorUnique()
         this.filterSizeUnique()
-      }
+      
     }, (error) => {
       console.error(error);
     })
   }
 
-  // Lọc lấy sản phẩm theo mã màu duy nhất
   filterColorUnique() {
     const uniqueProductsByColor: { [key: string]: any } = {};
     this.filteredProducts.forEach((product: any) => {
@@ -361,7 +463,6 @@ export class DetailproductsComponent {
     this.filterColor = Object.values(uniqueProductsByColor);
   }
 
-  //Lọc lấy theo mã kích thước duy nhất
   filterSizeUnique() {
     const uniqueProductsBySize: { [key: string]: any } = {};
     this.filteredProducts.forEach((product: any) => {
@@ -375,31 +476,90 @@ export class DetailproductsComponent {
 
   create() {
     this.submitted = true
-    if (this.formDetailProduct.valid) {
-      if (this.selectedFile) {
-        const formData = new FormData();
-        formData.append('file', this.selectedFile);
-        this.http.post("http://localhost:8000/upload", formData).subscribe((response: any) => {
-          let path = response.url;
-          this.imageSrc = "http://localhost:8000/" + path;
-        }, (error) => {
-          console.error(error);
-        })
-      }
-      this.http.post("http://localhost:8000/admin/detailproduct/create", this.detailproductobj).subscribe((response: any) => {
-        if (response.result) {
-          this.getdataid(this.detailproductobj.MaSanPham);
-          alert(response.message)
-          this.formDetailProduct.reset()
-          this.submitted = false
-          this.reload();
-        }
-        else {
-          alert("thêm thất bại")
-        }
-      }, (error) => {
-        console.error(error);
+    console.log(this.detailproducts,this.detailproductobj);
+    
+    const checkurlimg = this.detailproducts.find((x: any) => x.MaMau === Number(this.detailproductobj.MaMau) && x.MaSanPham === Number(this.detailproductobj.MaSanPham))
+    const checked = this.detailproducts.some((item:any) => 
+      Number(item.MaMau) === Number(this.detailproductobj.MaMau) && 
+      Number(item.MaKichThuoc) === Number(this.detailproductobj.MaKichThuoc)
+  );    console.log(checked);
+    
+    if(checked){
+      this.toastmsg.showToast({
+        title:"Sản phẩm đã tồn tại",
+        type:"warning"
       })
+    }else{
+      if (this.formDetailProduct.valid) {
+        // if (this.selectedFile) {
+        //   const formData = new FormData();
+        //   formData.append('file', this.selectedFile);
+        //   this.http.post("http://localhost:8000/upload", formData).subscribe((response: any) => {
+        //     let path = response.url;
+        //     this.imageSrc = "http://localhost:8000/" + path;
+        //   }, (error) => {
+        //     console.error(error);
+        //   })
+        // }
+        if (checkurlimg) {
+          this.http.post("http://localhost:8000/admin/detailproduct/create", this.detailproductobj).subscribe((response: any) => {
+            if (response.result) {
+              this.http.get("http://localhost:8000/admin/product/datanew").subscribe((response: any) => {
+                let param = {
+                  "MaMau": checkurlimg.MaMau,
+                  "MaChiTietSanPham": response[0].MaChiTietSanPham,
+                  "DuongDan": checkurlimg.duongdan
+                }
+                this.http.post("http://localhost:8000/admin/product/createimg", param).subscribe((response: any) => {
+                  if (response.result) {
+                    this.getdataid(this.detailproductobj.MaSanPham);
+                    this.toastmsg.showToast({
+                      title: response.message,
+                      type: "success"
+                    })
+                    this.getallimg()
+                    this.formDetailProduct.reset()
+                    this.submitted = false
+                    this.reload();
+                  }
+                }, (error) => {
+                  console.error(error);
+                })
+              })
+            }
+            else {
+              this.toastmsg.showToast({
+                title: "Lỗi",
+                type: "warning"
+              })
+            }
+          }, (error) => {
+            console.error(error);
+          })
+        } else {
+          this.http.post("http://localhost:8000/admin/detailproduct/create", this.detailproductobj).subscribe((response: any) => {
+            if (response.result) {
+              this.getdataid(this.detailproductobj.MaSanPham);
+              this.toastmsg.showToast({
+                title: response.message,
+                type: "success"
+              })
+              this.getallimg()
+              this.formDetailProduct.reset()
+              this.submitted = false
+              this.reload();
+            }
+            else {
+              this.toastmsg.showToast({
+                title: "Lỗi",
+                type: "warning"
+              })
+            }
+          }, (error) => {
+            console.error(error);
+          })
+        }
+      }
     }
   }
 
@@ -407,12 +567,18 @@ export class DetailproductsComponent {
     if (confirm("Bạn có muốn xóa sản phẩm này không?")) {
       this.http.delete("http://localhost:8000/admin/detailproduct/delete/" + id).subscribe((response: any) => {
         if (response.result) {
-          alert(response.message)
-          this.getdataid(id);
+          this.getdataid(this.detailproductobj.MaSanPham);
+          this.toastmsg.showToast({
+            title: response.message,
+            type: "success"
+          })
+
         }
         else {
-          alert("xóa thất bại")
-          console.log(response.message);
+          this.toastmsg.showToast({
+            title: "Lỗi",
+            type: "warning"
+          })
         }
       }, (error) => {
         console.error(error);
@@ -430,7 +596,6 @@ export class DetailproductsComponent {
         this.detailproduct.GiaBan = response.data[0].GiaBan;
         this.detailproduct.GiaKhuyenMai = response.data[0].GiaKhuyenMai;
         this.detailproduct.SoLuongTon = response.data[0].SoLuongTon;
-        console.log(this.detailproduct);
       }
       else {
         console.log(response.message);
@@ -443,12 +608,17 @@ export class DetailproductsComponent {
   update() {
     this.http.post("http://localhost:8000/admin/detailproduct/update", this.detailproduct).subscribe((response: any) => {
       if (response.result) {
-        alert(response.message)
         this.getdataid(this.id);
+        this.toastmsg.showToast({
+          title: response.message,
+          type: "success"
+        })
       }
       else {
-        alert("sửa thất bại")
-        console.log(response.message);
+        this.toastmsg.showToast({
+          title: "Lỗi",
+          type: "warning"
+        })
       }
     }, (error) => {
       console.error(error);
@@ -496,63 +666,58 @@ export class DetailproductsComponent {
   }
 
   //Lọc lấy thông tin theo mã màu
-  filterByColor(event:any) {
+  filterByColor(event: any) {
     var idColor = event.target.value
     if (idColor) {
       this.filteredProducts = this.detailproducts.filter((item: any) => item.MaMau === Number(idColor));
     } else {
       this.filteredProducts = [...this.detailproducts]; // Trả về tất cả sản phẩm nếu không có bộ lọc được chọn
     }
-    console.log(this.filteredProducts);
   }
 
-  filterByColorAndSize(colorId:any, sizeId: any) {
+  filterByColorAndSize(colorId: any, sizeId: any) {
     if (colorId) {
-      if(this.selectedSize){
+      if (this.selectedSize) {
         this.filteredProducts = this.detailproducts.filter((item: any) => item.MaMau === Number(colorId) && item.MaKichThuoc === Number(this.selectedSize));
-      }else{
+      } else {
         this.filteredProducts = this.detailproducts.filter((item: any) => item.MaMau === Number(colorId));
       }
     }
-    
-    if (sizeId) {      
-      if(this.selectedColor){
+
+    if (sizeId) {
+      if (this.selectedColor) {
         this.filteredProducts = this.detailproducts.filter((item: any) => item.MaKichThuoc === Number(sizeId) && item.MaMau === Number(colorId));
-      }else{
+      } else {
         this.filteredProducts = this.detailproducts.filter((item: any) => item.MaKichThuoc === Number(sizeId));
       }
     }
-    
+
   }
 
-  filterBySize(event:any) {
+  filterBySize(event: any) {
     const idSize = event.target.value;
     if (idSize) {
       this.filteredProducts = this.detailproducts.filter((item: any) => item.MaKichThuoc === Number(idSize));
     } else {
       this.filteredProducts = [...this.detailproducts]; // Trả về tất cả sản phẩm nếu không có bộ lọc được chọn
     }
-    console.log(this.filteredProducts);
-    
   }
 
-  search(){
-    if(this.searchKeyWord === ""){
+  search() {
+    if (this.searchKeyWord === "") {
       this.getdataid(this.id)
-    }else{
-      console.log(this.searchKeyWord);
-      
-      this.filteredProducts = this.detailproducts.filter((item:any) => item.TenSanPham.toLowerCase().includes(this.searchKeyWord.toLowerCase())
-                                                        || item.TenMau.toLowerCase().includes(this.searchKeyWord.toLowerCase())
-                                                        || item.TenKichThuoc.toLowerCase().includes(this.searchKeyWord.toLowerCase())
-                                                        || item.GiaBan.toString().includes(this.searchKeyWord.toLowerCase())
-                                                        || item.GiaKhuyenMai.toString().includes(this.searchKeyWord.toLowerCase())
-                                                        || item.SoLuongTon.toString().includes(this.searchKeyWord.toLowerCase())
-                                                      )
+    } else {
+      this.filteredProducts = this.detailproducts.filter((item: any) => item.TenSanPham.toLowerCase().includes(this.searchKeyWord.toLowerCase())
+        || item.TenMau.toLowerCase().includes(this.searchKeyWord.toLowerCase())
+        || item.TenKichThuoc.toLowerCase().includes(this.searchKeyWord.toLowerCase())
+        || item.GiaBan.toString().includes(this.searchKeyWord.toLowerCase())
+        || item.GiaKhuyenMai.toString().includes(this.searchKeyWord.toLowerCase())
+        || item.SoLuongTon.toString().includes(this.searchKeyWord.toLowerCase())
+      )
     }
   }
 
-  reloadFilter(){
+  reloadFilter() {
     this.selectedColor = ""
     this.selectedSize = ""
     this.getdataid(this.id)

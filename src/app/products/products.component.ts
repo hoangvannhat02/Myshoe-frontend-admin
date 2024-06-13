@@ -3,6 +3,7 @@ import { Component, ElementRef, Injectable, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import Editor from 'ckeditor5-custom-build/build/ckeditor';
+import { ToastService } from '../myservice/toast.service';
 
 @Component({
   selector: 'app-products',
@@ -12,7 +13,6 @@ import Editor from 'ckeditor5-custom-build/build/ckeditor';
 
 export class ProductsComponent {
   public Editor = Editor;
-
   totalPages:number = 0;
   productobj = {
     "MaSanPham":0,
@@ -56,7 +56,8 @@ export class ProductsComponent {
     private route:Router,
     private renderer: Renderer2, 
     private el: ElementRef,
-    private fb:FormBuilder
+    private fb:FormBuilder,
+    private toastmsg:ToastService
   ){
     this.formProduct = this.fb.group({
       TenSanPham: ['', [Validators.required]],
@@ -129,7 +130,6 @@ export class ProductsComponent {
   getdatabrand() {
     this.http.get("http://localhost:8000/admin/brand/data").subscribe((response: any) => {
       this.brands = response;
-      console.log(this.brands)
     }, (error) => {
       console.error(error);
     })
@@ -172,14 +172,20 @@ export class ProductsComponent {
     if (this.formProduct.valid) {
     this.http.post("http://localhost:8000/admin/product/create",this.productobj).subscribe((response: any) => {
       if (response.result) {
-        alert(response.message)
+        this.toastmsg.showToast({
+          title:"Thêm thành công",
+          type:"success"
+        })
         this.loadnew();
         this.formProduct.reset()
         this.submitted = false
         this.search();
       }
       else {
-        alert("thêm thất bại")
+        this.toastmsg.showToast({
+          title:"Lỗi",
+          type:"warning"
+        })
       }
     }, (error) => {
       console.error(error);
@@ -187,10 +193,8 @@ export class ProductsComponent {
   }
   }
 
-  getdatabyid(id:any){
-    this.http.get("http://localhost:8000/admin/product/databyid/"+id).subscribe((response:any)=>{
-      console.log(response);
-      
+  getdatabyid(id:any){    
+    this.http.get("http://localhost:8000/admin/product/databyid/"+Number(id)).subscribe((response:any)=>{      
       if (response) {
         this.product.MaSanPham = response[0].MaSanPham;
         this.product.TenSanPham = response[0].TenSanPham;
@@ -200,6 +204,8 @@ export class ProductsComponent {
         this.product.TrangThai = response[0].TrangThai.data[0];
         this.product.MoTaNgan = response[0].MoTaNgan;
         this.product.MoTa = response[0].MoTa;
+        console.log(this.product);
+        
       }
       
     },(error)=>{
@@ -210,12 +216,17 @@ export class ProductsComponent {
   edit() {
     this.http.post("http://localhost:8000/admin/product/update", this.product).subscribe((response: any) => {
       if (response.result) {
-        alert(response.message)
+        this.toastmsg.showToast({
+          title:response.message,
+          type:"success"
+        })
         this.search();
       }
       else {
-        alert("sửa thất bại")
-        console.log(response.message);
+        this.toastmsg.showToast({
+          title:"Lỗi",
+          type:"warning"
+        })
       }
     }, (error) => {
       console.error(error);
@@ -226,12 +237,17 @@ export class ProductsComponent {
     if (confirm("Bạn có muốn xóa sản phẩm này không?")) {
       this.http.delete("http://localhost:8000/admin/product/delete/" + id).subscribe((response: any) => {
         if (response.result) {
-          alert(response.message)
+          this.toastmsg.showToast({
+            title:"Xóa thành công",
+            type:"success"
+          })
           this.search();
         }
         else {
-          alert("xóa thất bại")
-          console.log(response.message);  
+          this.toastmsg.showToast({
+            title:"Lỗi",
+            type:"warning"
+          }) 
         }
       }, (error) => {
         console.error(error);
@@ -272,9 +288,17 @@ export class ProductsComponent {
       this.selectedItems.forEach((item) => {
         this.http.delete("http://localhost:8000/admin/product/delete/" + item.MaSanPham).subscribe((response: any) => {
           if (response.result) {
+            this.toastmsg.showToast({
+              title:"Xóa thành công",
+              type:"success"
+            })
             this.search();
           }
         }, (error) => {
+          this.toastmsg.showToast({
+            title:"Lỗi",
+            type:"warning"
+          })
           console.error(error);
         })
       })

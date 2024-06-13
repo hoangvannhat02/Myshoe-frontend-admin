@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { ToastService } from '../myservice/toast.service';
 
 @Component({
   selector: 'app-importinvoices',
@@ -43,7 +44,8 @@ export class ImportinvoicesComponent {
     private router: Router,
     private renderer: Renderer2,
     private el: ElementRef,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toastmsg:ToastService
   ) {
     this.formImportinvoice = this.fb.group({
       MaNhaCungCap: [0, [Validators.required, Validators.min(1)]],
@@ -120,11 +122,17 @@ export class ImportinvoicesComponent {
           this.loadNew();
           this.formImportinvoice.reset()
           this.submitted = false
-          alert(response.message)
+          this.toastmsg.showToast({
+            title:"Thêm thành công",
+            type:"success"
+          })
         }
         else {
           console.log(response.message);
-          alert("thêm thất bại")
+          this.toastmsg.showToast({
+            title:"Lỗi",
+            type:"error"
+          })
         }
       }, (error) => {
         console.error(error);
@@ -179,17 +187,21 @@ export class ImportinvoicesComponent {
   edit() {
     const formattedDate = this.datePiPe.transform(new Date(this.importinvoiceobj.NgayNhap), 'yyyy-MM-dd');
     this.importinvoiceobj.NgayNhap = formattedDate;
-    console.log(this.importinvoiceobj);
 
     this.http.post("http://localhost:8000/admin/importinvoice/update", this.importinvoiceobj).subscribe((response: any) => {
-      console.log(response);
 
       if (response.result) {
-        alert(response.message)
+        this.toastmsg.showToast({
+          title:"Cập nhật thành công",
+          type:"success"
+        })
         this.getdata();
       }
       else {
-        alert("sửa thất bại")
+        this.toastmsg.showToast({
+          title:"Lỗi",
+          type:"error"
+        })
       }
     }, (error) => {
       console.error(error);
@@ -201,11 +213,17 @@ export class ImportinvoicesComponent {
     if (confirm("Bạn có muốn xóa thông tin này không?")) {
       this.http.delete("http://localhost:8000/admin/importinvoice/delete/" + id).subscribe((response: any) => {
         if (response.result) {
-          alert(response.message)
+          this.toastmsg.showToast({
+            title:"Thêm thành công",
+            type:"success"
+          })
           this.getdata();
         }
         else {
-          alert("xóa thất bại")
+          this.toastmsg.showToast({
+            title:"Lỗi",
+            type:"error"
+          })
         }
       }, (error) => {
         console.error(error);

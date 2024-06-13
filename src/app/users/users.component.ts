@@ -3,6 +3,7 @@ import { DatePipe } from '@angular/common';
 import {  Component, ElementRef, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import * as bcrypt from 'bcryptjs';
+import { ToastService } from '../myservice/toast.service';
 
 @Component({
   selector: 'app-users',
@@ -58,7 +59,8 @@ export class UsersComponent {
     private datePiPe: DatePipe,
     private renderer: Renderer2,
     private el: ElementRef,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toastmsg:ToastService
   ) {
     this.formUser = this.fb.group({
       HoTen: ['', [Validators.required, Validators.minLength(1)]],
@@ -156,11 +158,17 @@ export class UsersComponent {
                 this.loadNew();
                 this.formUser.reset()
                 this.submitted = false
-                alert(response.message)
+                this.toastmsg.showToast({
+                  title:"Thêm thành công",
+                  type:"success"
+                })
               }
               else {
                 console.log(response.message);
-                alert("thêm thất bại")
+                this.toastmsg.showToast({
+                  title:"Có lỗi",
+                  type:"error"
+                })
               }
             }, (error) => {
               console.error(error);
@@ -182,11 +190,17 @@ export class UsersComponent {
             this.loadNew();
             this.formUser.reset()
             this.submitted = false
-            alert(response.message)
+            this.toastmsg.showToast({
+              title:"Thêm thành công",
+              type:"success"
+            })
           }
           else {
             console.log(response.message);
-            alert("thêm thất bại")
+            this.toastmsg.showToast({
+              title:"Có lỗi",
+              type:"error"
+            })
           }
         }, (error) => {
           console.error(error);
@@ -271,11 +285,17 @@ export class UsersComponent {
                 , (error) => {
                   console.error(error)
                 })
-              alert(response.message)
+                this.toastmsg.showToast({
+                  title:"Cập nhật thành công",
+                  type:"success"
+                })
               this.getdata();
             }
             else {
-              alert("sửa thất bại")
+              this.toastmsg.showToast({
+                title:"Có lỗi",
+                type:"error"
+              })
             }
           }, (error) => {
             console.error(error);
@@ -291,11 +311,17 @@ export class UsersComponent {
         console.log(response);
         
         if (response.result) {
-          alert(response.message)
+          this.toastmsg.showToast({
+            title:"Cập nhật thành công",
+            type:"success"
+          })
           this.getdata();
         }
         else {
-          alert("sửa thất bại")
+          this.toastmsg.showToast({
+            title:"Có lỗi",
+            type:"error"
+          })
         }
       }, (error) => {
         console.error(error);
@@ -309,11 +335,17 @@ export class UsersComponent {
     if (confirm("Bạn có muốn xóa sản phẩm này không?")) {
       this.http.delete("http://localhost:8000/admin/user/delete/" + id).subscribe((response: any) => {
         if (response.result) {
-          alert(response.message)
+          this.toastmsg.showToast({
+            title:"Xóa thành công",
+            type:"success"
+          })
           this.getdata();
         }
         else {
-          alert("xóa thất bại")
+          this.toastmsg.showToast({
+            title:"Có lỗi",
+            type:"error"
+          })
         }
       }, (error) => {
         console.error(error);

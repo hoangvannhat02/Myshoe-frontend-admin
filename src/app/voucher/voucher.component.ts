@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { min } from 'rxjs';
+import { ToastService } from '../myservice/toast.service';
 
 @Component({
   selector: 'app-voucher',
@@ -43,7 +44,8 @@ export class VoucherComponent {
     private datePiPe: DatePipe,
     private renderer: Renderer2,
     private el: ElementRef,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toastmsg: ToastService
   ) {
     this.formVoucher = this.fb.group({
       TenPhieu: ['', [Validators.required]],
@@ -150,14 +152,20 @@ export class VoucherComponent {
         console.log(response);
 
         if (response.result) {
-          alert(response.message)
+          this.toastmsg.showToast({
+            title:"Thêm thành công",
+            type:"success"
+          })
           this.formVoucher.reset()
           this.submitted = false
           this.loadnew();
           this.search();
         }
         else {
-          alert("thêm thất bại")
+          this.toastmsg.showToast({
+            title:"Có lỗi",
+            type:"error"
+          })
         }
       }, (error) => {
         console.error(error);
@@ -212,11 +220,17 @@ export class VoucherComponent {
       console.log(response);
 
       if (response.result) {
-        alert(response.message)
+        this.toastmsg.showToast({
+          title:"Cập nhật thành công",
+          type:"success"
+        })
         this.search();
       }
       else {
-        alert("sửa thất bại")
+        this.toastmsg.showToast({
+          title:"Có lỗi",
+          type:"error"
+        })
       }
     }, (error) => {
       console.error(error);
@@ -228,11 +242,17 @@ export class VoucherComponent {
     if (confirm("Bạn có muốn xóa sản phẩm này không?")) {
       this.http.delete("http://localhost:8000/admin/voucher/delete/" + id).subscribe((response: any) => {
         if (response.result) {
-          alert(response.message)
+          this.toastmsg.showToast({
+            title:"Xóa thành công",
+            type:"success"
+          })
           this.search();
         }
         else {
-          alert("xóa thất bại")
+          this.toastmsg.showToast({
+            title:"Có lỗi",
+            type:"error"
+          })
         }
       }, (error) => {
         console.error(error);

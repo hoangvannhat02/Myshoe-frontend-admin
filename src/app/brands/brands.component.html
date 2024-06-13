@@ -142,7 +142,7 @@
                     <hr style="color: rgba(0,0,0,0.01);margin: 10px 0;">
                     <div class="box-search">
                         <div class="datatable_length">
-                            <label for="">Show
+                            <label for="">Hiển thị
                                 <select [(ngModel)]="filterobj.itemsperpage" (change)="search()">
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -152,11 +152,11 @@
                                     <option value="20">20</option>
                                     <option value="30">30</option>
                                 </select>
-                                Entries
+                                Bản ghi
                             </label>
                         </div>
                         <form action="">
-                            <span>Search: </span><input type="text" [(ngModel)]="filterobj.searchkeyword"
+                            <span>Tìm kiếm: </span><input type="text" [(ngModel)]="filterobj.searchkeyword"
                                 (input)="search()" placeholder="Nhập thông tin tìm kiếm"
                                 [ngModelOptions]="{standalone: true}">
                         </form>
@@ -170,7 +170,7 @@
                                         <input type="checkbox" [(ngModel)]="checkedAll" (change)="selectedAll($event)"> All
                                     </th>
                                     <th>
-                                        Mã hãng
+                                        STT
                                     </th>
                                     <th>
                                         Tên hãng
@@ -187,12 +187,12 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let item of brands">
+                                <tr *ngFor="let item of brands,let i = index">
                                     <td>
                                         <input type="checkbox" [checked]="isChecked(item)" (change)="checkedItem($event,item)">
                                     </td>
                                     <td>
-                                        {{ item.MaHang }}
+                                        {{ i + 1 + (filterobj.pagenumber - 1) * filterobj.itemsperpage }}
                                     </td>
                                     <td>
                                         {{ item.TenHang }}
@@ -217,7 +217,7 @@
                                             class="fa-solid fa-angle-left"></i></a>
                                 </li>
                                 <li>
-                                    <a href="#">{{ filterobj.pagenumber }}</a>
+                                    <a>{{ filterobj.pagenumber }}</a>
                                 </li>
                                 <li>
                                     <a href="#" (click)="onNext($event)"
@@ -245,8 +245,9 @@
                                     </div>
                                     <div class="col c-12 m-12 l-12 form-input">
                                         <label for="mota">Mô tả</label>
-                                        <input [(ngModel)]="brand.MoTa" type="text" name="mota" id="mota"
-                                            class="form-control">
+                                        <!-- <input [(ngModel)]="brand.MoTa" type="text" name="mota" id="mota"
+                                            class="form-control"> -->
+                                        <ckeditor [editor]="Editor" [(ngModel)]="brand.MoTa" class="form-control" name="mota" id="mota"></ckeditor>
                                     </div>
                                     <div class="col c-12 m-12 l-12 form-button" style="margin-bottom: 20px;">
                                         <button (click)="edit()" type="button" class="btn-edit">Sửa</button>

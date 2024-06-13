@@ -35,6 +35,7 @@ dist/
 build/
 
 # Environment variables
+environment/
 .env
 
 # Angular specific

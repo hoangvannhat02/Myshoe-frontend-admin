@@ -15,9 +15,9 @@
 
                     <div class="menu-item">
                         <div class="box-manage-menu">
-                            <i class="fa-solid fa-bars-progress"></i><a
-                             href="#">Quản lý sản phẩm</a>
-                            <i id="icon-angle-right" style="margin-left: 20px;font-size: 12px;" class="fa-solid fa-angle-right"></i>                                  
+                            <i class="fa-solid fa-bars-progress"></i><a href="#">Quản lý sản phẩm</a>
+                            <i id="icon-angle-right" style="margin-left: 20px;font-size: 12px;"
+                                class="fa-solid fa-angle-right"></i>
                         </div>
                         <ul class="menu-item__list">
                             <li>
@@ -48,9 +48,9 @@
 
                     <div class="menu-item">
                         <div class="box-manage-menu">
-                            <i class="fa-solid fa-ticket"></i><a
-                             href="#">Quản lý phiếu giảm giá</a>
-                            <i id="icon-angle-right" style="margin-left: 20px;font-size: 12px;" class="fa-solid fa-angle-right"></i>                                  
+                            <i class="fa-solid fa-ticket"></i><a href="#">Quản lý phiếu giảm giá</a>
+                            <i id="icon-angle-right" style="margin-left: 20px;font-size: 12px;"
+                                class="fa-solid fa-angle-right"></i>
                         </div>
                         <ul class="menu-item__list">
                             <li>
@@ -65,9 +65,9 @@
 
                     <div class="menu-item">
                         <div class="box-manage-menu">
-                            <i class="fa-solid fa-newspaper"></i><a
-                             href="#">Quản lý tin tức</a>
-                            <i id="icon-angle-right" style="margin-left: 20px;font-size: 12px;" class="fa-solid fa-angle-right"></i>                                  
+                            <i class="fa-solid fa-newspaper"></i><a href="#">Quản lý tin tức</a>
+                            <i id="icon-angle-right" style="margin-left: 20px;font-size: 12px;"
+                                class="fa-solid fa-angle-right"></i>
                         </div>
                         <ul class="menu-item__list">
                             <li>
@@ -79,11 +79,11 @@
                             </li>
                         </ul>
                     </div>
-                      
+
                     <div class="menu-item">
                         <i class="fa-solid fa-truck-arrow-right"></i><a routerLink="/transport">Quản lý vận chuyển</a>
                     </div>
-                    
+
                     <div class="menu-item"><i class="fa-solid fa-users"></i><a routerLink="/user">Người dùng</a>
                     </div>
                     <div class="menu-item">
@@ -93,15 +93,13 @@
                     <div class="menu-item">
                         <i class="fa-regular fa-credit-card"></i><a routerLink="/billofsale">Hóa đơn bán</a>
                     </div>
-                    <div class="menu-item" >
-                        <i class="fa-solid fa-message"></i><a
-                            routerLink="/message">Tin nhắn</a>
+                    <div class="menu-item">
+                        <i class="fa-solid fa-message"></i><a routerLink="/message">Tin nhắn</a>
                     </div>
                     <div class="menu-item">
-                        <i class="fa-solid fa-list-check"></i><a
-                            routerLink="/orther">Thông tin khác</a>
+                        <i class="fa-solid fa-list-check"></i><a routerLink="/orther">Thông tin khác</a>
                     </div>
-                    
+
                 </div>
             </div>
             <div class="col c-12 m-9 l-9">
@@ -112,23 +110,41 @@
                     </div>
 
                     <div class="gird box-manage">
-                        <form class="row" [formGroup]="formCategoryImportinvoice" (ngSubmit)="add()" action="" method="post">                          
-                            <div class="col c-12 m-6 l-6 form-input">
+                        <form class="row" [formGroup]="formCategoryImportinvoice" (ngSubmit)="add()" action=""
+                            method="post">
+                            <div class="col c-12 m-12 l-12 form-input">
                                 <label for="mahoadonnhap">Mã hóa đơn nhập</label>
-                                <input [(ngModel)]="detailimportinvoice.MaHoaDonNhap" type="number"
-                                    id="mahoadonnhap" [value]="detailimportinvoice.MaHoaDonNhap" class="form-control" disabled>       
+                                <input [(ngModel)]="detailimportinvoice.MaHoaDonNhap" type="number" id="mahoadonnhap"
+                                    [value]="detailimportinvoice.MaHoaDonNhap" class="form-control" disabled>
                             </div>
-                            <div class="col c-12 m-6 l-6 form-input">
+                            <div class="col c-12 m-12 l-12" style="margin: 6px 0;">
                                 <label for="sanpham">Sản phẩm nhập</label>
+                                <ng-select [items]="products" bindLabel="TenSanPham" bindValue="MaChiTietSanPham"
+                                    [(ngModel)]="detailimportinvoice.MaChiTietSanPham"
+                                    formControlName="MaChiTietSanPham" [searchable]="true"
+                                    placeholder="Chọn sản phẩm nhập" id="sanpham" class="form-control">
+                                    <ng-template ng-label-tmp let-item="item">
+                                        {{item.TenSanPham +" - "+ item.TenMau +" - "+ item.TenKichThuoc + " (Giá bán: "+
+                                        (item.GiaBan|number) + ", Số lượng tồn: "+ (item.SoLuongTon) +")" }}
+                                    </ng-template>
+
+                                    <ng-template ng-option-tmp let-item="item" let-index="index">
+                                        {{item.TenSanPham +" - "+ item.TenMau +" - "+ item.TenKichThuoc + " (Giá bán: "+
+                                        (item.GiaBan|number) + ", Số lượng tồn: "+ (item.SoLuongTon) +")" }}
+                                    </ng-template>
+                                </ng-select>
+                                <!-- <label for="sanpham">Sản phẩm nhập</label>
                                 <select name="sanpham" [(ngModel)]="detailimportinvoice.MaChiTietSanPham" formControlName="MaChiTietSanPham"
                                     id="sanpham" class="form-control">
+                                    <option value="0" disabled hidden>Chọn sản phẩm nhập</option>
                                     <option *ngFor="let item of products" [value]="item.MaChiTietSanPham">
-                                        {{item.TenSanPham +" - "+ item.TenMau +" - "+ item.TenKichThuoc }}
+                                        {{item.TenSanPham +" - "+ item.TenMau +" - "+ item.TenKichThuoc + " (Giá bán: "+ (item.GiaBan|number)  + ", Số lượng tồn: "+ (item.SoLuongTon) +")" }}
                                     </option>
-                                </select>
+                                </select> -->
                                 <div class="message-error"
                                     *ngIf="formCategoryImportinvoice.get('MaChiTietSanPham')?.touched || submitted">
-                                    <ng-container *ngIf="formCategoryImportinvoice.get('MaChiTietSanPham')?.hasError('required') || formCategoryImportinvoice.get('MaChiTietSanPham')?.hasError('min')">
+                                    <ng-container
+                                        *ngIf="formCategoryImportinvoice.get('MaChiTietSanPham')?.hasError('required') || formCategoryImportinvoice.get('MaChiTietSanPham')?.hasError('min')">
                                         {{ 'Không được để trống' }}
                                     </ng-container>
                                 </div>
@@ -136,11 +152,12 @@
 
                             <div class="col c-12 m-6 l-6 form-input">
                                 <label for="soluong">Số lượng</label>
-                                <input [(ngModel)]="detailimportinvoice.SoLuong" formControlName="SoLuong" type="number" name="soluong"
-                                    id="soluong" class="form-control">
-                                    <div class="message-error"
+                                <input [(ngModel)]="detailimportinvoice.SoLuong" formControlName="SoLuong" type="number"
+                                    name="soluong" id="soluong" class="form-control">
+                                <div class="message-error"
                                     *ngIf="formCategoryImportinvoice.get('SoLuong')?.touched || submitted">
-                                    <ng-container *ngIf="formCategoryImportinvoice.get('SoLuong')?.hasError('required')">
+                                    <ng-container
+                                        *ngIf="formCategoryImportinvoice.get('SoLuong')?.hasError('required')">
                                         {{ 'Không được để trống' }}
                                     </ng-container>
                                     <ng-container *ngIf="formCategoryImportinvoice.get('SoLuong')?.hasError('min')">
@@ -151,17 +168,18 @@
 
                             <div class="col c-12 m-6 l-6 form-input">
                                 <label for="gianhap">Giá nhập</label>
-                                <input [(ngModel)]="detailimportinvoice.GiaNhap" formControlName="GiaNhap" type="number" name="gianhap"
-                                    id="gianhap" class="form-control">
-                                    <div class="message-error"
+                                <input [(ngModel)]="detailimportinvoice.GiaNhap" formControlName="GiaNhap" type="number"
+                                    name="gianhap" id="gianhap" class="form-control">
+                                <div class="message-error"
                                     *ngIf="formCategoryImportinvoice.get('GiaNhap')?.touched || submitted">
-                                    <ng-container *ngIf="formCategoryImportinvoice.get('GiaNhap')?.hasError('required')">
+                                    <ng-container
+                                        *ngIf="formCategoryImportinvoice.get('GiaNhap')?.hasError('required')">
                                         {{ 'Không được để trống' }}
                                     </ng-container>
                                     <ng-container *ngIf="formCategoryImportinvoice.get('GiaNhap')?.hasError('min')">
                                         {{ 'Giá nhập phải lớn hơn 0' }}
                                     </ng-container>
-                                    </div>
+                                </div>
                             </div>
 
                             <div class="col c-12 m-12 l-12 form-button">
@@ -175,17 +193,17 @@
                     <div class="box-search">
                         <form action="">
                             <span>Search: </span><input type="text" [(ngModel)]="searchkeyword" (input)="search()"
-                               placeholder="Nhập thông tin tìm kiếm"
-                                [ngModelOptions]="{standalone: true}">
+                                placeholder="Nhập thông tin tìm kiếm" [ngModelOptions]="{standalone: true}">
                         </form>
                     </div>
 
-                    <div class="box-table" >
+                    <div class="box-table">
                         <table>
                             <thead>
                                 <tr>
                                     <th>
-                                        <input type="checkbox" [(ngModel)]="checkedAll" (change)="selectedAll($event)"> All
+                                        <input type="checkbox" [(ngModel)]="checkedAll" (change)="selectedAll($event)">
+                                        All
                                     </th>
                                     <th>
                                         Mã chi tiết hóa đơn nhập
@@ -198,7 +216,7 @@
                                     <th>
                                         Số lượng
                                     </th>
-                                    
+
                                     <th>
                                         Giá nhập
                                     </th>
@@ -225,7 +243,7 @@
                                     <td>
                                         {{ item.TenSanPham + "-" + item.TenMau + "-" + item.TenKichThuoc }}
                                     </td>
-                                    
+
                                     <td>
                                         {{ item.SoLuong }}
                                     </td>
@@ -233,18 +251,18 @@
                                     <td>
                                         {{ item.GiaNhap | number }}
                                     </td>
-                                   
-                                    <td style="display: flex; border: none;align-items: center;">                                      
+
+                                    <td style="display: flex; border: none;align-items: center;">
                                         <i id="modal" class="fa-solid fa-pencil"
-                                            (click)="getdatabyid(item.MaChiTietHoadonNhap)"></i><i class="fa-solid fa-trash"
-                                            (click)="delete(item.MaChiTietHoadonNhap)"></i>
+                                            (click)="getdatabyid(item.MaChiTietHoadonNhap)"></i><i
+                                            class="fa-solid fa-trash" (click)="delete(item.MaChiTietHoadonNhap)"></i>
                                     </td>
                                 </tr>
 
                             </tbody>
                         </table>
 
-                      
+
 
                         <div class="showmodel" data-target="#modal">
                             <div class="showmodel__content">
@@ -252,14 +270,17 @@
                                 <div class="gird box-manage">
                                     <form class="row" action="" method="post">
                                         <input type="number" name="machitiethoadonnhap" id="machitiethoadonnhap"
-                                            [ngModel]="detailimportinvoiceobj.MaChiTietHoaDonNhap" style="display: none;">
-                                            <div class="col c-12 m-12 l-12 form-input">
-                                                <h1 style="margin-bottom: 10px;">Mã chi tiết hóa đơn nhập: {{ detailimportinvoiceobj.MaChiTietHoaDonNhap }}</h1>
-                                            </div>
+                                            [ngModel]="detailimportinvoiceobj.MaChiTietHoaDonNhap"
+                                            style="display: none;">
+                                        <div class="col c-12 m-12 l-12 form-input">
+                                            <h1 style="margin-bottom: 10px;">Mã chi tiết hóa đơn nhập: {{
+                                                detailimportinvoiceobj.MaChiTietHoaDonNhap }}</h1>
+                                        </div>
                                         <div class="col c-12 m-6 l-6 form-input">
                                             <label for="mahoadonnhap">Mã hóa đơn nhập</label>
                                             <input [(ngModel)]="detailimportinvoiceobj.MaHoaDonNhap" type="number"
-                                                id="mahoadonnhap" [value]="detailimportinvoiceobj.MaHoaDonNhap" class="form-control" disabled>
+                                                id="mahoadonnhap" [value]="detailimportinvoiceobj.MaHoaDonNhap"
+                                                class="form-control" disabled>
                                         </div>
                                         <div class="col c-12 m-6 l-6 form-input">
                                             <label for="sanpham">Sản phẩm nhập</label>
@@ -273,14 +294,14 @@
 
                                         <div class="col c-12 m-6 l-6 form-input">
                                             <label for="soluong">Số lượng</label>
-                                            <input [(ngModel)]="detailimportinvoiceobj.SoLuong" type="number" name="soluong"
-                                                id="soluong" class="form-control">
+                                            <input [(ngModel)]="detailimportinvoiceobj.SoLuong" type="number"
+                                                name="soluong" id="soluong" class="form-control">
                                         </div>
 
                                         <div class="col c-12 m-6 l-6 form-input">
                                             <label for="gianhap">Giá nhập</label>
-                                            <input [(ngModel)]="detailimportinvoiceobj.GiaNhap" type="number" name="gianhap"
-                                                id="gianhap" class="form-control">
+                                            <input [(ngModel)]="detailimportinvoiceobj.GiaNhap" type="number"
+                                                name="gianhap" id="gianhap" class="form-control">
                                         </div>
                                         <div class="col c-12 m-12 l-12 form-button" style="margin-bottom: 20px;">
                                             <button type="button" (click)="edit()" class="btn-edit">Sửa</button>

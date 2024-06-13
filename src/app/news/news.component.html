@@ -128,6 +128,7 @@
                                 <label for="chudetintuc">Chủ đề tin tức</label>
                                 <select name="chudetintuc" [(ngModel)]="newobj.MaChuDeTinTuc" formControlName="MaChuDeTinTuc" id="chudetintuc"
                                     class="form-control">
+                                    <option value="0" disabled hidden>Chọn chủ đề tin tức</option>
                                     <option *ngFor="let item of categorynews" [value]="item.MaChuDeTintuc">
                                         {{item.TenChuDe}}
                                     </option>
@@ -161,6 +162,7 @@
                                 <label for="nguoidung">Người tạo</label>
                                 <select name="nguoidung" [(ngModel)]="newobj.MaNguoiDung" formControlName="MaNguoiDung" id="nguoidung"
                                     class="form-control">
+                                    <option value="0" disabled hidden>Chọn người tạo bài viết</option>
                                     <option *ngFor="let item of users" [value]="item.MaNguoiDung">{{item.HoTen}}
                                     </option>
                                 </select>
@@ -199,7 +201,7 @@
                     <hr style="color: rgba(0,0,0,0.01);margin: 10px 0;">
                     <div class="box-search">
                         <div class="datatable_length">
-                            <label for="">Show
+                            <label for="">Hiển thị
                                 <select [(ngModel)]="filterobj.itemsperpage" (change)="search()">
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -209,11 +211,11 @@
                                     <option value="20">20</option>
                                     <option value="30">30</option>
                                 </select>
-                                Entries
+                                Bản ghi
                             </label>
                         </div>
                         <form action="">
-                            <span>Search: </span><input type="text" [(ngModel)]="filterobj.searchkeyword"
+                            <span>Tìm kiếm: </span><input type="text" [(ngModel)]="filterobj.searchkeyword"
                                 (input)="search()" placeholder="Nhập thông tin tìm kiếm"
                                 [ngModelOptions]="{standalone: true}">
                         </form>
@@ -227,7 +229,7 @@
                                         <input type="checkbox" [(ngModel)]="checkedAll" (change)="selectedAll($event)"> All
                                     </th>
                                     <th>
-                                        Mã tin tức
+                                        STT
                                     </th>
                                     <th>
                                         Tiêu đề
@@ -261,13 +263,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let item of news">
+                                <tr *ngFor="let item of news,let i = index">
                                     <td>
                                         <input type="checkbox" [checked]="isChecked(item)"
                                             (change)="checkedItem($event,item)">
                                     </td>
                                     <td>
-                                        {{ item.MaTin }}
+                                        {{ i + 1 + (filterobj.pagenumber - 1) * filterobj.itemsperpage }}
                                     </td>
                                     <td>
                                         {{ item.TieuDe }}
@@ -309,7 +311,7 @@
                                             class="fa-solid fa-angle-left"></i></a>
                                 </li>
                                 <li>
-                                    <a href="#">{{ filterobj.pagenumber }}</a>
+                                    <a>{{ filterobj.pagenumber }}</a>
                                 </li>
                                 <li>
                                     <a href="#" (click)="onNext($event)"

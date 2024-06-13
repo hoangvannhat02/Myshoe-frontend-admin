@@ -4,6 +4,7 @@ import { Component, ElementRef, Renderer2, ViewChild } from '@angular/core';
 import { CkeditorService } from '../myservice/ckeditor.service';
 import Editor from 'ckeditor5-custom-build/build/ckeditor';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastService } from '../myservice/toast.service';
 
 @Component({
   selector: 'app-news',
@@ -57,7 +58,7 @@ export class NewsComponent {
     private datePiPe: DatePipe,
     private renderer: Renderer2,
     private el: ElementRef,
-    private ckeditor: CkeditorService,
+    private toastmsg: ToastService,
     private fb: FormBuilder
   ) {
     this.formNew = this.fb.group({
@@ -171,7 +172,10 @@ export class NewsComponent {
               console.log(response);
 
               if (response.result) {
-                alert(response.message)
+                this.toastmsg.showToast({
+                  title:"Thêm thành công",
+                  type:"success"
+                })
                 this.fileInput.nativeElement.value = "";
                 this.loadnew();
                 this.formNew.reset()
@@ -179,7 +183,10 @@ export class NewsComponent {
                 this.search();
               }
               else {
-                alert("thêm thất bại")
+                this.toastmsg.showToast({
+                  title:"Có lỗi",
+                  type:"error"
+                })
               }
             }, (error) => {
               console.error(error);
@@ -194,12 +201,18 @@ export class NewsComponent {
 
         this.http.post("http://localhost:8000/admin/news/create", this.newobj).subscribe((response: any) => {
           if (response.result) {
-            alert(response.message)
+            this.toastmsg.showToast({
+              title:"Thêm thành công",
+              type:"success"
+            })
             this.loadnew();
             this.search();
           }
           else {
-            alert("thêm thất bại")
+            this.toastmsg.showToast({
+              title:"Có lỗi",
+              type:"error"
+            })
           }
         }, (error) => {
           console.error(error);
@@ -284,12 +297,18 @@ export class NewsComponent {
                   console.error(error)
                 })
 
-              alert(response.message)
+                this.toastmsg.showToast({
+                  title:"Cập nhật thành công",
+                  type:"success"
+                })
               this.fileInputedit.nativeElement.value = "";
               this.search();
             }
             else {
-              alert("sửa thất bại")
+              this.toastmsg.showToast({
+                title:"Có lỗi",
+                type:"error"
+              })
             }
           }, (error) => {
             console.error(error);
@@ -309,11 +328,17 @@ export class NewsComponent {
             , (error) => {
               console.error(error)
             })
-          alert(response.message)
+            this.toastmsg.showToast({
+              title:"Cập nhật thành công",
+              type:"success"
+            })
           this.search();
         }
         else {
-          alert("sửa thất bại")
+          this.toastmsg.showToast({
+            title:"Có lỗi",
+            type:"error"
+          })
         }
       }, (error) => {
         console.error(error);
@@ -330,11 +355,17 @@ export class NewsComponent {
             , (error) => {
               console.error(error)
             })
-          alert(response.message)
+            this.toastmsg.showToast({
+              title:"Xóa thành công",
+              type:"success"
+            })
           this.search();
         }
         else {
-          alert("xóa thất bại")
+          this.toastmsg.showToast({
+            title:"Có lỗi",
+            type:"error"
+          })
         }
       }, (error) => {
         console.error(error);

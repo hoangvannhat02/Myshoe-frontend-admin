@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ToastService } from 'src/app/myservice/toast.service';
 
 @Component({
   selector: 'app-categorynews',
@@ -29,7 +30,8 @@ export class CategorynewsComponent {
     private http: HttpClient,
     private renderer: Renderer2,
     private el: ElementRef,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toastmsg:ToastService
   ) {
     this.formCategorynew = this.fb.group({
       tenchude: ['', [Validators.required]],
@@ -93,14 +95,20 @@ export class CategorynewsComponent {
       }
       this.http.post("http://localhost:8000/admin/categorynews/create", obj).subscribe((response: any) => {
         if (response.result) {
-          alert(response.message)
+          this.toastmsg.showToast({
+            title:"Thêm thành công",
+            type:"success"
+          })
           this.tenchude = '';
           this.formCategorynew.reset()
         this.submitted = false
           this.search();
         }
         else {
-          alert("thêm thất bại")
+          this.toastmsg.showToast({
+            title:"Có lỗi",
+            type:"error"
+          })
         }
       }, (error) => {
         console.error(error);
@@ -144,11 +152,17 @@ export class CategorynewsComponent {
   edit() {
     this.http.post("http://localhost:8000/admin/categorynews/update", this.categorynew).subscribe((response: any) => {
       if (response.result) {
-        alert(response.message)
+        this.toastmsg.showToast({
+          title:"Cập nhật thành công",
+          type:"success"
+        })
         this.search();
       }
       else {
-        alert("sửa thất bại")
+        this.toastmsg.showToast({
+          title:"Có lỗi",
+          type:"error"
+        })
       }
     }, (error) => {
       console.error(error);
@@ -160,11 +174,17 @@ export class CategorynewsComponent {
     if (confirm("Bạn có muốn xóa chủ đề này không?")) {
       this.http.delete("http://localhost:8000/admin/categorynews/delete/" + id).subscribe((response: any) => {
         if (response.result) {
-          alert(response.message)
+          this.toastmsg.showToast({
+            title:"Xóa thành công",
+            type:"success"
+          })
           this.search();
         }
         else {
-          alert("xóa thất bại")
+          this.toastmsg.showToast({
+            title:"Có lỗi",
+            type:"error"
+          })
         }
       }, (error) => {
         console.error(error);

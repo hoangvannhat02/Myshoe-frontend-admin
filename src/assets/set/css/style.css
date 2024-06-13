@@ -894,6 +894,7 @@ body{
 
 .box-table{
     overflow-wrap: anywhere;
+    margin-bottom: 150px;
 }
 
 .img-banner.show{
@@ -946,4 +947,8 @@ body{
     #printButtons {
         display: none !important;
     }
+}
+
+.box-table table thead tr th {
+    white-space: nowrap;overflow: hidden;text-overflow: ellipsis;
 }

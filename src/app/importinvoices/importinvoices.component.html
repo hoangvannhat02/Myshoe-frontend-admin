@@ -117,6 +117,7 @@
                                 <label for="nhacungcap">Nhà cung cấp</label>
                                 <select name="nhacungcap" [(ngModel)]="importinvoice.MaNhaCungCap"
                                     formControlName="MaNhaCungCap" id="nhacungcap" class="form-control">
+                                    <option value="0" disabled hidden>Chọn nhà cung cấp</option>
                                     <option *ngFor="let item of suppliers" [value]="item.MaNhaCungCap">{{item.HoTen}}
                                     </option>
                                 </select>
@@ -133,6 +134,7 @@
                                 <label for="nguoinhap">Người nhập</label>
                                 <select name="nguoinhap" [(ngModel)]="importinvoice.MaNguoiDung"
                                     formControlName="MaNguoiDung" id="nguoinhap" class="form-control">
+                                    <option value="0" disabled hidden>Chọn người nhập hóa đơn</option>
                                     <option *ngFor="let item of users" [value]="item.MaNguoiDung">{{item.HoTen}}
                                     </option>
                                 </select>
@@ -254,7 +256,7 @@
                                             class="fa-solid fa-angle-left"></i></a>
                                 </li>
                                 <li>
-                                    <a href="#">{{ filterobj.pagenumber }}</a>
+                                    <a>{{ filterobj.pagenumber }}</a>
                                 </li>
                                 <li>
                                     <a href="#" (click)="onNext($event)"

@@ -2,6 +2,7 @@ import { Component, ElementRef, Injectable, Renderer2 } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import Editor from 'ckeditor5-custom-build/build/ckeditor';
+import { ToastService } from '../myservice/toast.service';
 
 @Component({
   selector: 'app-categories',
@@ -34,7 +35,9 @@ export class CategoriesComponent {
     private http: HttpClient,
     private renderer: Renderer2,
     private fb: FormBuilder,
-    private el: ElementRef) {
+    private el: ElementRef,
+    private toastmsg:ToastService
+  ) {
     this.formCategory = this.fb.group({
       tenloai: ['', [Validators.required, Validators.minLength(1)]],
       mota: ['', [Validators.required, Validators.minLength(1)]]
@@ -107,10 +110,17 @@ export class CategoriesComponent {
           this.formCategory.reset()
           this.submitted = false
           this.search();
-          alert(response.message)
+          this.toastmsg.showToast({
+            title:"Thêm thành công",
+            type:"success"
+          })
+          // alert(response.message)
         }
         else {
-          alert("thêm thất bại")
+          this.toastmsg.showToast({
+            title:"Lỗi",
+            type:"warning"
+          })
         }
       }, (error) => {
         console.error(error);
@@ -156,15 +166,20 @@ export class CategoriesComponent {
   }
 
   edit() {
-    console.log(this.category);
-
     this.http.post("http://localhost:8000/admin/category/update", this.category).subscribe((response: any) => {
       if (response.result) {
-        alert(response.message)
+        this.toastmsg.showToast({
+          title:"Cập nhật thành công",
+          type:"success"
+        })
+        // alert(response.message)
         this.search();
       }
       else {
-        alert("sửa thất bại")
+        this.toastmsg.showToast({
+          title:"Lỗi",
+          type:"warning"
+        })
       }
     }, (error) => {
       console.error(error);
@@ -176,11 +191,17 @@ export class CategoriesComponent {
     if (confirm("Bạn có muốn xóa sản phẩm này không?")) {
       this.http.delete("http://localhost:8000/admin/category/delete/" + id).subscribe((response: any) => {
         if (response.result) {
-          alert(response.message)
+          this.toastmsg.showToast({
+            title:response.message,
+            type:"success"
+          })
           this.search();
         }
         else {
-          alert("xóa thất bại")
+          this.toastmsg.showToast({
+            title:"Lỗi",
+            type:"warning"
+          })
         }
       }, (error) => {
         console.error(error);
@@ -217,6 +238,10 @@ export class CategoriesComponent {
       this.selectedItems.forEach((item)=>{
         this.http.delete("http://localhost:8000/admin/category/delete/" + item.MaLoai).subscribe((response: any) => {
           if (response.result) {
+            this.toastmsg.showToast({
+              title:"Đã xóa",
+              type:"success"
+            })
             this.search();
           }
         }, (error) => {

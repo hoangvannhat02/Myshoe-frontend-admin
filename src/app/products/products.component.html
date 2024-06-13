@@ -129,6 +129,7 @@
                                 <label for="loaisanpham">Loại sản phẩm</label>
                                 <select name="loaisanpham" [(ngModel)]="productobj.MaLoai" id="loaisanpham" formControlName="MaLoai"
                                     class="form-control">
+                                    <option value="0" disabled hidden>Chọn loại sản phẩm</option>
                                     <option *ngFor="let item of categories" [value]="item.MaLoai">{{item.TenLoai}}
                                     </option>
                                 </select>
@@ -141,7 +142,8 @@
 
                             <div class="col c-12 m-6 l-6 form-input">
                                 <label for="hang">Hãng</label>
-                                <select name="hang" [(ngModel)]="productobj.MaHang" id="hang" class="form-control" formControlName="MaHang"> 
+                                <select name="hang" [(ngModel)]="productobj.MaHang" id="hang" class="form-control" formControlName="MaHang">
+                                    <option value="0" disabled hidden>Chọn hãng</option> 
                                     <option *ngFor="let item of brands" [value]="item.MaHang">{{item.TenHang}}</option>
                                 </select>
                                 <div class="message-error" *ngIf="formProduct.get('MaHang')?.touched || submitted">
@@ -199,7 +201,7 @@
                     <hr style="color: rgba(0,0,0,0.01);margin: 10px 0;">
                     <div class="box-search">
                         <div class="datatable_length">
-                            <label for="">Show
+                            <label for="">Hiển thị
                                 <select [(ngModel)]="filterobj.itemsperpage" (change)="search()">
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -209,11 +211,11 @@
                                     <option value="20">20</option>
                                     <option value="30">30</option>
                                 </select>
-                                Entries
+                                Bản ghi
                             </label>
                         </div>
                         <form action="">
-                            <span>Search: </span><input type="text" [(ngModel)]="filterobj.searchkeyword"
+                            <span>Tìm kiếm: </span><input type="text" [(ngModel)]="filterobj.searchkeyword"
                                 (input)="search()" [ngModelOptions]="{standalone: true}"
                                 placeholder="Nhập thông tin tìm kiếm">
                         </form>
@@ -227,7 +229,7 @@
                                         <input type="checkbox" [(ngModel)]="checkedAll" (change)="selectedAll($event)"> All
                                     </th>
                                     <th>
-                                        Mã sản phẩm
+                                        STT
                                     </th>
                                     <th>
                                         Tên sản phẩm
@@ -236,12 +238,12 @@
                                     <th>
                                         Hãng
                                     </th>
-                                    <th>
+                                    <!-- <th>
                                         Lượt xem
                                     </th>
                                     <th>
                                         Trạng thái
-                                    </th>
+                                    </th> -->
                                     <th>Mô tả ngắn</th>
                                     <th>Mô tả</th>
                                     <th>
@@ -252,13 +254,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let item of products">
+                                <tr *ngFor="let item of products,let i = index">
                                     <td>
                                         <input type="checkbox" [checked]="isChecked(item)"
                                             (change)="checkedItem($event,item)">
                                     </td>
                                     <td>
-                                        {{ item.MaSanPham }}
+                                        {{ i + 1 + (filterobj.pagenumber - 1) * filterobj.itemsperpage }}
                                     </td>
                                     <td>
                                         {{ item.TenSanPham }}
@@ -271,12 +273,12 @@
                                     <td>
                                         {{ item.TenHang }}
                                     </td>
-                                    <td>
+                                    <!-- <td>
                                         {{ item.LuotXem }}
                                     </td>
                                     <td>
                                         {{ item.TrangThai.data[0] }}
-                                    </td>
+                                    </td> -->
                                     <td [innerHTML]="item.MoTaNgan">
                                     </td>
                                     <td [innerHTML]="item.MoTa">
@@ -285,8 +287,8 @@
 
                                     <td>
                                         <i class="fa-solid fa-eye" title="Xem thông tin chi tiết sản phẩm"
-                                            (click)="redirettodetail(item.MaSanPham)"></i> <i id="modal"
-                                            class="fa-solid fa-pencil" (click)="getdatabyid(item.MaSanPham)"></i><i
+                                            (click)="redirettodetail(item.MaSanPham)"></i> <i title="Sửa sản phẩm" id="modal"
+                                            class="fa-solid fa-pencil" (click)="getdatabyid(item.MaSanPham)"></i><i title="Xóa sản phẩm"
                                             (click)="delete(item.MaSanPham)" class="fa-solid fa-trash"></i>
                                     </td>
                                 </tr>
@@ -301,7 +303,7 @@
                                             class="fa-solid fa-angle-left"></i></a>
                                 </li>
                                 <li>
-                                    <a href="">{{ filterobj.pagenumber }}</a>
+                                    <a >{{ filterobj.pagenumber }}</a>
                                 </li>
                                 <li>
                                     <a href="#" (click)="onNext($event)"
@@ -343,16 +345,6 @@
                                             </select>
                                         </div>
                                         <div class="col c-12 m-6 l-6 form-input">
-                                            <label for="motangan">Mô tả ngắn</label>
-                                            <input [(ngModel)]="product.MoTaNgan" type="text" name="motangan"
-                                                id="motangan" class="form-control">
-                                        </div>
-                                        <div class="col c-12 m-6 l-6 form-input">
-                                            <label for="mota">Mô tả</label>
-                                            <input [(ngModel)]="product.MoTa" type="text" name="mota" id="mota"
-                                                class="form-control">
-                                        </div>
-                                        <div class="col c-12 m-6 l-6 form-input">
                                             <label for="trangthai">Trạng thái</label>
                                             <select [(ngModel)]="product.TrangThai" name="trangthai" id="trangthai"
                                                 class="form-control">
@@ -360,6 +352,15 @@
                                                 <option value="0">Ngưng hoạt động</option>
                                             </select>
                                         </div>
+                                        <div class="col c-12 m-6 l-6 form-input">
+                                            <label for="motangan">Mô tả ngắn</label>
+                                            <ckeditor [editor]="Editor" [(ngModel)]="product.MoTaNgan" class="form-control" name="motangan" id="motangan"></ckeditor>
+                                        </div>
+                                        <div class="col c-12 m-6 l-6 form-input">
+                                            <label for="mota">Mô tả</label>
+                                            <ckeditor [editor]="Editor" [(ngModel)]="product.MoTa" class="form-control" name="mota" id="mota"></ckeditor>
+                                        </div>
+                                       
                                         <!-- <div class="col c-12 m-12 l-12 form-input">
                                             <label for="mausac">Màu sắc</label>
                                             <select name="mausac" id="mausac" ng-model="mausac" class="form-control"

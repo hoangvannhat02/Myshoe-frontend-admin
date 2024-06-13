@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, Renderer2 } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastService } from 'src/app/myservice/toast.service';
 
 @Component({
   selector: 'app-detailimportvoices',
@@ -14,8 +15,8 @@ export class DetailimportvoicesComponent {
   searchkeyword: any;
   detailimportinvoices: any;
   detailimportinvoice: any = {
-    MaHoaDonNhap: 0,
-    MaChiTietSanPham: 0,
+    MaHoaDonNhap: null,
+    MaChiTietSanPham: null,
     GiaNhap: 0,
     SoLuong: 0
   };
@@ -34,12 +35,12 @@ export class DetailimportvoicesComponent {
   submitted = false
   formCategoryImportinvoice: FormGroup
   constructor(
-    private http: HttpClient, 
-    private datePiPe: DatePipe, 
+    private http: HttpClient,  
     private route: ActivatedRoute,
     private renderer: Renderer2, 
     private el: ElementRef,
-    private fb: FormBuilder
+    private fb: FormBuilder,
+    private toastmsg:ToastService
   ) {
     this.formCategoryImportinvoice = this.fb.group({
       MaChiTietSanPham: [0, [Validators.required, Validators.min(1)]],
@@ -96,6 +97,7 @@ export class DetailimportvoicesComponent {
   add() {
     this.submitted = true
     if (this.formCategoryImportinvoice.valid) {
+    console.log(this.detailimportinvoices);
     let isMatch = this.detailimportinvoices.find((data: any) => {
       return data.MaChiTietSanPham.toString() === this.detailimportinvoice.MaChiTietSanPham.toString();
     });
@@ -109,11 +111,17 @@ export class DetailimportvoicesComponent {
           this.loadNew();
           this.formCategoryImportinvoice.reset()
           this.submitted = false
-          alert(response.message)
+          this.toastmsg.showToast({
+            title:"Thêm thành công",
+            type:"success"
+          })
         }
         else {
           console.log(response.message);
-          alert("thêm thất bại")
+          this.toastmsg.showToast({
+            title:"Lỗi",
+            type:"error"
+          })
         }
       }, (error) => {
         console.error(error);
@@ -125,9 +133,11 @@ export class DetailimportvoicesComponent {
 
 
   getdata() {
-    this.http.get("http://localhost:8000/admin/detailimportinvoice/databyid/" + this.id).subscribe((response: any) => {
+    this.http.get("http://localhost:8000/admin/detailimportinvoice/databyid/" + this.id).subscribe((response: any) => {      
       if (response) {
         this.detailimportinvoices = response;
+        console.log(this.detailimportinvoices);
+        
       }
       else
       {
@@ -161,14 +171,18 @@ export class DetailimportvoicesComponent {
 
   edit() {
     this.http.post("http://localhost:8000/admin/detailimportinvoice/update", this.detailimportinvoiceobj).subscribe((response: any) => {
-      console.log(response);
-
       if (response.result) {
-        alert(response.message)
+        this.toastmsg.showToast({
+          title:"Cập nhật thành công",
+          type:"success"
+        })
         this.getdata();
       }
       else {
-        alert("sửa thất bại")
+        this.toastmsg.showToast({
+          title:"Lỗi",
+          type:"error"
+        })
       }
     }, (error) => {
       console.error(error);
@@ -179,14 +193,18 @@ export class DetailimportvoicesComponent {
   delete(id: any) {
     if (confirm("Bạn có muốn xóa thông tin này không?")) {
       this.http.delete("http://localhost:8000/admin/detailimportinvoice/delete/" + id).subscribe((response: any) => {
-        console.log(response);
-
         if (response.result) {
-          alert(response.message)
+          this.toastmsg.showToast({
+            title:"Xóa thành công",
+            type:"success"
+          })
           this.getdata();
         }
         else {
-          alert("xóa thất bại")
+          this.toastmsg.showToast({
+            title:"Lỗi",
+            type:"error"
+          })
         }
       }, (error) => {
         console.error(error);
@@ -197,6 +215,7 @@ export class DetailimportvoicesComponent {
     this.http.get("http://localhost:8000/admin/detailproduct/data").subscribe((response: any) => {
       this.products = response;
       console.log(this.products);
+      
     }, (error) => {
       console.error(error);
     })
@@ -205,7 +224,6 @@ export class DetailimportvoicesComponent {
 
   redirettodetail(id: any) {
     this.http.get("http://localhost:8000/admin/detailimportinvoice/databyid/" + id).subscribe((response: any) => {
-      console.log(response);
     }, (error) => {
       console.error(error);
     })
@@ -226,9 +244,7 @@ export class DetailimportvoicesComponent {
   }
 
   checkedItem(event: any, item: any) {
-    const ischecked = event.target.checked
-    console.log(event.target);
-    
+    const ischecked = event.target.checked    
     if (ischecked) {
       this.selectedItems.push(item)
     } else {

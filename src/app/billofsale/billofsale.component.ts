@@ -1,6 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, ElementRef, QueryList, Renderer2, ViewChildren } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastService } from '../myservice/toast.service';
 
 @Component({
   selector: 'app-billofsale',
@@ -10,12 +11,12 @@ import { ActivatedRoute, Router } from '@angular/router';
 export class BillofsaleComponent {
   tenloai = '';
 
-  status=0;
+  status = 0;
   filterobj = {
     "searchkeyword": "",
     "pagenumber": 1,
     "itemsperpage": 5,
-    "status":0
+    "status": 0
   }
   totalPages = 0;
   bills: any;
@@ -26,18 +27,18 @@ export class BillofsaleComponent {
 
   constructor(
     private http: HttpClient,
-    private renderer: Renderer2, 
+    private renderer: Renderer2,
     private el: ElementRef,
-    private router:Router,
-    private route: ActivatedRoute
-    ) 
-    { };
+    private router: Router,
+    private route: ActivatedRoute,
+    private toastmsg: ToastService
+  ) { };
 
   ngOnInit(): void {
 
     this.route.queryParams.subscribe(params => {
       const status = params['status'];
-      if(status){
+      if (status) {
         this.filterobj.status = status
         this.status = status
         this.search()
@@ -85,7 +86,6 @@ export class BillofsaleComponent {
         this.category.TenLoai = response[0].TenLoai;
         this.category.MoTa = response[0].MoTa;
       }
-      console.log(this.category)
     }, (error) => {
       console.error(error);
 
@@ -93,8 +93,7 @@ export class BillofsaleComponent {
   }
 
   search() {
-    this.http.post("http://localhost:8000/admin/billofsale/search", this.filterobj).subscribe((response: any) => {   
-      console.log(response);
+    this.http.post("http://localhost:8000/admin/billofsale/search", this.filterobj).subscribe((response: any) => {
       if (response) {
         const totalItems = response[0][0].totalperpages;
         if (totalItems === 0) {
@@ -113,27 +112,93 @@ export class BillofsaleComponent {
     })
   }
 
-  changene(){
-    this.router.navigate([],{queryParams:{status:this.status}})
+  changene() {
+    this.router.navigate([], { queryParams: { status: this.status } })
     this.filterobj.status = this.status
     this.search()
   }
 
-  onPrevious(event:Event){
+  onPrevious(event: Event) {
     event.preventDefault();
-    this.filterobj.pagenumber --;
+    this.filterobj.pagenumber--;
     this.search();
   }
 
-  onNext(event:Event){
+  onNext(event: Event) {
     event.preventDefault();
-    this.filterobj.pagenumber ++;
+    this.filterobj.pagenumber++;
     this.search();
   }
 
+  checkbill(bill: any) {
+    console.log(bill);
 
-  redirettodetail(id:any){
-    this.router.navigate(['/detailbillofsale/',id])
+    this.http.get("http://localhost:8000/admin/detailbillofsale/datainfoproductbyid/" + bill.MaHoaDon).subscribe((response: any) => {
+      if (response) {
+        console.log(response);
+
+        if (bill.TrangThai < 2) {
+          if (bill.TrangThai === 1) {
+            response.forEach((value: any) => {
+              this.http.post("http://localhost:8000/admin/detailproduct/updatequantityproduct", {
+                MaChiTietSanPham: value.MaChiTietSanPham,
+                SoLuongTon: value.SoLuong
+              }).subscribe((response: any) => {
+                if (response.result) {
+                }
+                else {
+                  // this.toastmsg.showToast({
+                  //   title:"Lỗi",
+                  //   type:"error"
+                  // })
+                }
+              }, (error) => {
+                console.error(error);
+              })
+            })
+            // this.toastmsg.showToast({
+            //   title:"Duyệt thành công",
+            //   type:"success"
+            // })
+            // this.search();
+          }
+
+          let params = {
+            MaHoaDon: bill.MaHoaDon,
+            TrangThai: bill.TrangThai += 1,
+            trangthaithanhtoan: 1
+          }
+
+          this.http.post("http://localhost:8000/admin/billofsale/update", params).subscribe((response: any) => {
+            if (response.result) {
+              this.toastmsg.showToast({
+                title: "Duyệt thành công",
+                type: "success"
+              })
+              this.search();
+            }
+            else {
+              this.toastmsg.showToast({
+                title: "Lỗi",
+                type: "error"
+              })
+            }
+          }, (error) => {
+            console.error(error);
+          })
+
+        }
+      }
+    }, (error) => {
+      console.error(error);
+
+    })
+
+  }
+
+
+  redirettodetail(id: any) {
+    this.router.navigate(['/detailbillofsale/', id])
   }
 
   // delete(id: any) {

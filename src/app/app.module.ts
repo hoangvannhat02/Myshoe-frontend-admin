@@ -40,6 +40,7 @@ import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireAuthModule } from "@angular/fire/compat/auth";
 import { TimeAgoPipe } from './myservice/time-ago.pipe';
 import { OrtherComponent } from './orther/orther.component';
+import { NgSelectModule } from '@ng-select/ng-select';
 
 @NgModule({
   declarations: [
@@ -80,6 +81,7 @@ import { OrtherComponent } from './orther/orther.component';
     BrowserAnimationsModule,
     NoopAnimationsModule,
     NgxChartsModule,
+    NgSelectModule,
     CalendarModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,

@@ -184,7 +184,7 @@
                     <hr style="color: rgba(0,0,0,0.01);margin: 10px 0;">
                     <div class="box-search">
                         <div class="datatable_length">
-                            <label for="">Show
+                            <label for="">Hiển thị
                                 <select [(ngModel)]="filterobj.itemsperpage" (change)="getdata()">
                                     <option value="1">1</option>
                                     <option value="2">2</option>
@@ -194,11 +194,11 @@
                                     <option value="20">20</option>
                                     <option value="30">30</option>
                                 </select>
-                                Entries
+                                Bản ghi
                             </label>
                         </div>
                         <form action="">
-                            <span>Search: </span><input type="text" [(ngModel)]="filterobj.searchkeyword"
+                            <span>Tìm kiếm: </span><input type="text" [(ngModel)]="filterobj.searchkeyword"
                                 (input)="getdata()" placeholder="Nhập thông tin tìm kiếm"
                                 [ngModelOptions]="{standalone: true}">
                         </form>
@@ -212,7 +212,7 @@
                                         <input type="checkbox" [(ngModel)]="checkedAll" (change)="selectedAll($event)"> All
                                     </th>
                                     <th>
-                                        Mã nhà cung cấp
+                                       STT
                                     </th>
                                     <th>
                                         Tên nhà cung cấp
@@ -234,14 +234,14 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let item of suppliers">
+                                <tr *ngFor="let item of suppliers,let i = index">
                                     <td>
                                         <input type="checkbox" [checked]="isChecked(item)"
                                             (change)="checkedItem($event,item)">
                                     </td>
 
                                     <td>
-                                        {{ item.MaNhaCungCap }}
+                                        {{ i + 1 + (filterobj.pagenumber - 1) * filterobj.itemsperpage }}
                                     </td>
                                     <td>
                                         {{ item.HoTen }}
@@ -275,7 +275,7 @@
                                             class="fa-solid fa-angle-left"></i></a>
                                 </li>
                                 <li>
-                                    <a href="#">{{ filterobj.pagenumber }}</a>
+                                    <a>{{ filterobj.pagenumber }}</a>
                                 </li>
                                 <li>
                                     <a href="#" (click)="onNext($event)"

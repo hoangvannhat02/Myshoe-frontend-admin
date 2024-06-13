@@ -232,7 +232,7 @@ export class MessageComponent {
           return x.username.toLowerCase().includes(getvalue.toLowerCase())   
         }
     )
-      this.users = fillterUser
+      this.users = fillterUser      
     }
     
   }

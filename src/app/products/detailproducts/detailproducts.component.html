@@ -115,13 +115,14 @@
                         <form class="row" [formGroup]="formDetailProduct" (ngSubmit)="create()" action="" method="post">
                             <!-- <input type="number" name="productid" id="productid" style="display: none;"> -->
                             <div class="col c-12 m-6 l-6 form-input">
-                                <label for="masanpham">Mã sản phẩm</label>
-                                <input type="text" name="masanpham" [(ngModel)]="detailproductobj.MaSanPham"
-                                    id="masanpham" placeholder="Nhập thông tin sản phẩm" class="form-control" disabled>
+                                <label for="masanpham">Tên sản phẩm</label>
+                                <input type="text" name="masanpham" [ngModelOptions]="{standalone: true}" [(ngModel)]="dataproductid[0].TenSanPham"
+                                    id="masanpham" class="form-control" disabled>
                             </div>
                             <div class="col c-12 m-6 l-6 form-input">
                                 <label for="mau">Màu</label>
                                 <select name="mau" [(ngModel)]="detailproductobj.MaMau" formControlName="MaMau" id="mau" class="form-control">
+                                    <option value="0" disabled hidden>Chọn màu sắc của sản phẩm</option>
                                     <option *ngFor="let item of colors" [value]="item.MaMau">{{item.TenMau}}</option>
                                 </select>
                                 <div class="message-error" *ngIf="formDetailProduct.get('MaMau')?.touched || submitted">
@@ -135,6 +136,7 @@
                                 <label for="kichthuoc">Kích thước</label>
                                 <select name="kichthuoc" [(ngModel)]="detailproductobj.MaKichThuoc" formControlName="MaKichThuoc" id="kichthuoc"
                                     class="form-control">
+                                    <option value="0" disabled hidden>Chọn kích thước cho sản phẩm</option>
                                     <option *ngFor="let item of sizes" [value]="item.MaKichThuoc">{{item.TenKichThuoc}}
                                     </option>
                                 </select>
@@ -223,7 +225,7 @@
                                         <input type="checkbox" [(ngModel)]="checkedAll" (change)="selectedAll($event)"> All
                                     </th>
                                     <th>
-                                        Mã chi tiết sản phẩm
+                                        STT
                                     </th>
                                     <th>
                                         Tên sản phẩm
@@ -250,13 +252,13 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr *ngFor="let item of filteredProducts">
+                                <tr *ngFor="let item of filteredProducts,let i = index">
                                     <td>
                                         <input type="checkbox" [checked]="isChecked(item)"
                                             (change)="checkedItem($event,item)">
                                     </td>
                                     <td>
-                                        {{ item.MaChiTietSanPham }}
+                                        {{ i+1 }}
                                     </td>
                                     <td>
                                         {{ item.TenSanPham }}
@@ -270,13 +272,13 @@
                                         {{ item.TenKichThuoc }}
                                     </td>
                                     <td>
-                                        <img id="modalimg" style="width:40px;cursor: pointer;" (click)="editimg(item.MaMau,item.MaChiTietSanPham)" [src]="item.duongdan ? ('http://localhost:8000/'+item.duongdan) : '/assets/set/img/user7.jpg'" alt="">
+                                        <img id="modalimg" style="width:40px;cursor: pointer;" (click)="editimg(item.MaMau,item.MaChiTietSanPham,item.TenMau,item.MaSanPham)" [src]="item.duongdan ? ('http://localhost:8000/'+item.duongdan) : 'assets/set/img/notimage.png'" alt="">
                                     </td>
                                     <td>
-                                        {{ item.GiaBan }}
+                                        {{ item.GiaBan | number }}đ
                                     </td>
                                     <td>
-                                        {{ item.GiaKhuyenMai }}
+                                        {{ item.GiaKhuyenMai | number }}đ
                                     </td>
                                     <td>
                                         {{ item.SoLuongTon }}
@@ -361,7 +363,7 @@
                                     <input type="number" name="mamau" id="mamau" [ngModel]="listimg.MaMau"
                                         style="display: none;">
                                     <div class="col c-12 m-12 l-12 form-input">
-                                        <h1 style="margin-bottom: 10px;">Mã màu: {{ listimg.MaMau }}</h1>
+                                        <h1 style="margin-bottom: 10px;">Màu sắc: {{ listimg.TenMau }}</h1>
                                     </div>
 
                                     <div class="col c-12 m-6 l-6 form-input" style="margin-top: 20px;">
@@ -397,7 +399,7 @@
                                                     <tr *ngFor="let item of listimgs">
 
                                                         <td>
-                                                            <img [src]="('http://localhost:8000/' + item.DuongDan) ? ('http://localhost:8000/' + item.DuongDan): '/assets/set/img/user7.jpg'" style="width: 100px;" >
+                                                            <img [src]="('http://localhost:8000/' + item.DuongDan) ? ('http://localhost:8000/' + item.DuongDan): '/assets/set/img/notimage.png'" style="width: 100px;" >
                                                         </td>
 
                                                         <td>
